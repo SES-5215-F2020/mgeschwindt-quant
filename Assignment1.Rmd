@@ -7,7 +7,7 @@ output: html_document
 
 # Importing the TidyCensus and Tidyverse Libraries
 
-```{r}
+```{r, message=FALSE}
 library(tidycensus)
 library(tidyverse)
 ```
@@ -37,7 +37,7 @@ I will additionally include the following variable which may be interesting for 
 
 Now that I've selected which variables to use, I'll load the variables to create the data frame.
 
-```{r}
+```{r, message = FALSE, results = 'hide'}
 women_walking2018 <- get_pums(variables = c("SEX",
                                       "JWTR",
                                       "JWMNP",
@@ -69,9 +69,9 @@ women_walking2018
 
 There are 2,553 rows, or observations in this data frame. The observations are taken at the person-level, meaning there are 2,553 people included in this analysis.
 
-# Saving CVS File
+# Saving the CVS File
 
-Before I commit and push this R Marked Down file to Github, I'll save the data loaded as a CSV file:
+Before I knit this R Markdown file and then commit and push it to Github, I'll save the data loaded as a CSV file:
 
 ```{r}
 write.csv(women_walking2018, "women_walking2018.csv")

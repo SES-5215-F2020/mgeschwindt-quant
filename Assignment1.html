@@ -373,26 +373,78 @@ summary {
 <h1>Importing the TidyCensus and Tidyverse Libraries</h1>
 <pre class="r"><code>library(tidycensus)
 library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages -------------------------------------------------------------------------------- tidyverse 1.3.0 --</code></pre>
-<pre><code>## v ggplot2 3.3.2     v purrr   0.3.4
-## v tibble  3.0.3     v dplyr   1.0.2
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.3.1     v forcats 0.5.0</code></pre>
-<pre><code>## -- Conflicts ----------------------------------------------------------------------------------- tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div id="creating-a-dataset" class="section level1">
 <h1>Creating a Dataset</h1>
-<div id="research-question" class="section level2">
-<h2>Research Question</h2>
-<p>In considering which variables to select for my data set for this assignment, I found it useful to first come up with a question I am interested in studying. The research question that I have considered for assignment 1 is:</p>
-<p><strong>What is the monthly housing cost of living in New York City for employed women with a college degree?</strong></p>
-<p>Based on this question, I know that I need to use the following person-level variables:</p>
-<p><em>Sex, Educational Attainment, Total Income</em></p>
-<p>I will also need the following household-level variables:</p>
-<p><em>Monthly Rent</em></p>
+<div id="area-of-interest" class="section level2">
+<h2>Area of Interest</h2>
+<p>In considering which variables to select for my data set for this assignment, I found it useful to first come up with a topic I am interested in studying. The topic that I have considered for assignment 1 is:</p>
+<p><strong>The relationship between age and travel distance to work for women who walked to work in New York State in 2018.</strong></p>
 </div>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
+<p>Based on my research question, I know that I need to use the following person-level variables:</p>
+<ol style="list-style-type: decimal">
+<li>Sex (categorical): SEX</li>
+<li>Means of transportation to work (categorical): JWTR</li>
+<li>Age (continuous): AGEP</li>
+<li>Travel time to work (continuous): JWMNP</li>
+</ol>
+<p>I will additionally include the following variable which may be interesting for further study:</p>
+<ol style="list-style-type: decimal">
+<li>Income (continuous): PINCP</li>
+</ol>
+</div>
+<div id="defining-the-variables" class="section level2">
+<h2>Defining the Variables</h2>
+<p>Now that I’ve selected which variables to use, I’ll load the variables to create the data frame.</p>
+<pre class="r"><code>women_walking2018 &lt;- get_pums(variables = c(&quot;SEX&quot;,
+                                      &quot;JWTR&quot;,
+                                      &quot;JWMNP&quot;,
+                                      &quot;AGEP&quot;,
+                                      &quot;PINCP&quot;),
+                        state = &quot;NY&quot;,
+                        year = 2018,
+                        survey = &quot;acs1&quot;,
+                        recode = TRUE) %&gt;%
+  filter(SEX == 2,
+         JWTR == 10,
+         JWMNP &gt; 0,
+         AGEP &gt; 18,
+         PINCP &gt; 0) %&gt;%
+  select(SEX_label, JWTR_label, JWMNP, AGEP, PINCP)</code></pre>
+</div>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<div id="data-frame-display" class="section level2">
+<h2>Data Frame Display</h2>
+<p>The following display shows the first few rows of the data frame that I created based on the variables loaded:</p>
+<pre class="r"><code>women_walking2018</code></pre>
+<pre><code>## # A tibble: 2,553 x 5
+##    SEX_label JWTR_label JWMNP  AGEP PINCP
+##    &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Female    Walked         5    20  5000
+##  2 Female    Walked        10    21  5550
+##  3 Female    Walked        10    19  1200
+##  4 Female    Walked         5    52 14100
+##  5 Female    Walked         4    19  5500
+##  6 Female    Walked        15    21  1000
+##  7 Female    Walked        10    21  2000
+##  8 Female    Walked        15    21  2800
+##  9 Female    Walked         3    20 15000
+## 10 Female    Walked        10    19  2000
+## # ... with 2,543 more rows</code></pre>
+</div>
+<div id="observations" class="section level2">
+<h2>Observations</h2>
+<p>There are 2,553 rows, or observations in this data frame. The observations are taken at the person-level, meaning there are 2,553 people included in this analysis.</p>
+</div>
+</div>
+<div id="saving-the-cvs-file" class="section level1">
+<h1>Saving the CVS File</h1>
+<p>Before I knit this R Markdown file and then commit and push it to Github, I’ll save the data loaded as a CSV file:</p>
+<pre class="r"><code>write.csv(women_walking2018, &quot;women_walking2018.csv&quot;)</code></pre>
 </div>
 
 
