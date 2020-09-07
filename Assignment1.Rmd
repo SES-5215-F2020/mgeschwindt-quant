@@ -5,16 +5,75 @@ date: "9/5/2020"
 output: html_document
 ---
 
-# Level 1 title
-
-Here is some text
-
-## Level 2 title
-
-More text.
+# Importing the TidyCensus and Tidyverse Libraries
 
 ```{r}
-2 + 2
+library(tidycensus)
+library(tidyverse)
 ```
 
-That was the answer!
+# Creating a Dataset
+
+## Area of Interest
+
+In considering which variables to select for my data set for this assignment, I found it useful to first come up with a topic I am interested in studying. The topic that I have considered for assignment 1 is:
+
+**The relationship between age and travel distance to work for women who walked to work in New York State in 2018.**
+
+## Variables
+
+Based on my research question, I know that I need to use the following person-level variables:
+
+1. Sex (categorical): SEX
+2. Means of transportation to work (categorical): JWTR
+3. Age (continuous): AGEP
+4. Travel time to work (continuous): JWMNP
+
+I will additionally include the following variable which may be interesting for further study:
+
+1. Income (continuous): PINCP
+
+## Defining the Variables
+
+Now that I've selected which variables to use, I'll load the variables to create the data frame.
+
+```{r}
+women_walking2018 <- get_pums(variables = c("SEX",
+                                      "JWTR",
+                                      "JWMNP",
+                                      "AGEP",
+                                      "PINCP"),
+                        state = "NY",
+                        year = 2018,
+                        survey = "acs1",
+                        recode = TRUE) %>%
+  filter(SEX == 2,
+         JWTR == 10,
+         JWMNP > 0,
+         AGEP > 18,
+         PINCP > 0) %>%
+  select(SEX_label, JWTR_label, JWMNP, AGEP, PINCP)
+```
+
+# Results
+
+## Data Frame Display
+
+The following display shows the first few rows of the data frame that I created based on the variables loaded:
+
+```{r}
+women_walking2018
+```
+
+## Observations
+
+There are 2,553 rows, or observations in this data frame. The observations are taken at the person-level, meaning there are 2,553 people included in this analysis.
+
+# Saving CVS File
+
+Before I commit and push this R Marked Down file to Github, I'll save the data loaded as a CSV file:
+
+```{r}
+write.csv(women_walking2018, "women_walking2018.csv")
+```
+
