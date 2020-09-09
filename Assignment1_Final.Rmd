@@ -1,0 +1,116 @@
+---
+title: "Assignment 1"
+author: "Mary Geschwindt"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+
+```{r, message=FALSE, results='hide'}
+library(tidycensus)
+library(tidyverse)
+```
+
+
+## Research Topic
+
+Because I am a woman with a physical disability living in New York City who has biked, walked, taken the subway, taken the bus, and taken a taxi to work, I am interested in understanding the relationships between age, travel time, mode of transportation to work, and physical disability for women in New York City.
+
+**My population consists of women in New York City, and my unit of analysis is person-level data.**
+
+I will now load the person-level ACS1 data for 2018 so that I can use this to load my variables.
+
+```{r, message=FALSE, results='hide'}
+person_vars_2018 <- pums_variables %>%
+  distinct(year, survey, var_code,
+           var_label, data_type, level) %>%
+  filter(level == "person", year == 2018, survey == "acs1")
+```
+
+Because I know that I only want to focus on person-level data for New York City, I will create a vector which holds all of the PUMAs for New York City Community Districts, which I can select as a variable to include and filter.
+I found the list of these PUMAs at: https://www1.nyc.gov/assets/planning/download/pdf/data-maps/nyc-population/census2010/puma_cd_map.pdf 
+
+```{r, message=FALSE, results='hide'}
+nyc_districts <- c("03710", "03705", "03708", "03707", "03706", "03701", "03709", "03703", "03704", "03702", "04001", "04004", "04003", "04002", "04008", "04005", "04012", "04006", "04011", "04013", "04017", "04014", "04018", "04015", "04016", "04007", "04010", "04009", "03810", "03809", "03807", "03808", "03806", "03805", "03802", "03803", "03804", "03801", "04101", "04109", "04102", "04107", "04110", "04108", "04103", "04106", "04111", "04113", "04104", "04112", "04105", "04114", "03903", "03902", "03901")
+```
+
+## Variables
+
+Based on my research topic, I know that I need to use variables related to sex, means of transportation, age, travel time to work, and physical disability.
+Beyond these variables, I think it would be interesting to include race and income for future study.
+
+Initially, I had sought to include a variable for monthly transportation costs, but this was not a variable which I could find at this stage.
+Additionally, I would be interested in exploring other disabilities (vision, hearing, cognitive, etc.) but for the purpose of keeping this assignment succinct, I decided to only include physical disabilities related to mobility for now.
+
+I will include the following variables for this assignment:
+
+1. NYC Community Districts (categorical): PUMA*
+2. Sex (categorical): SEX*
+3. Means of transportation to work (categorical): JWTR
+4. Age (continuous): AGEP
+5. Travel time to work (continuous): JWMNP
+6. Ambulatory difficulty (categorical): DPHY
+7. Race (categorical): RAC1P
+8. Income (continuous): PINCP
+
+
+* *These categorical variables will be filtered in order to define the population.*
+
+## Creating the Dataset
+
+Now that I've selected which variables to use, I'll load the variables to create my dataset.
+
+```{r, message=FALSE, results='hide'}
+women_nyctransport2018 <- get_pums(variables = c("PUMA",
+                                      "SEX",
+                                      "JWTR",
+                                      "AGEP",
+                                      "JWMNP",
+                                      "DPHY",
+                                      "RAC1P",
+                                      "PINCP"),
+                        state = "NY",
+                        year = 2018,
+                        survey = "acs1",
+                        recode = TRUE) %>%
+  filter(PUMA == nyc_districts,
+         SEX == 2,
+         JWMNP > 0,
+         PINCP > 0) %>%
+  select(JWTR_label, AGEP, JWMNP, RAC1P_label, PINCP, DPHY_label)
+```
+
+## Data Frame
+
+The following display shows the first few rows of the data frame that I created based on the variables loaded.
+I decided to not display the columns for the PUMAs (NYC Community Districts) and sex (female) because they are used to define the population and are implied. However, in a future study it may be interesting to see PUMAs to determine a relationship between location and any other variables.
+
+```{r}
+women_nyctransport2018
+```
+
+## Observations
+
+**There are 327 rows, or observations in this data frame.
+The observations are taken at the person-level, meaning there are 327 people included in this analysis.**
+
+Accessibility and gender gaps in transportation in New York City is an issue with which I am familiar and curious about further understanding.
+These are a few of the important relationships to understand in terms of studying whether the current transportation infrastructure in New York City is truly a system which equitably serves all genders, races, ages, socioeconomic statuses, and disabilities.
+
+By studying the specific population of women in New York City, I hope to begin to see what some of these relationships are.
+However, I would need more information in order to come to a conclusion beyond relationships of variables.
+Because I cannot answer the question "Do the existing transportation infrastructure systems in New York City equitably serve all genders, races, ages, socioeconomic statuses, and disabilities" with quantitative data alone, I would need to employ results from qualitative data analyses to answer this question.
+
+## Saving the CSV File
+
+Before I knit this R Markdown file and then commit and push it to Github, I'll save the data loaded as a CSV file:
+
+```{r}
+write.csv(women_nyctransport2018, "women_nyctrasnport2018.csv")
+```
+
+**This concludes Assignment 1.**
