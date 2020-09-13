@@ -1,0 +1,324 @@
+,JWTR_label,AGEP,JWMNP,RAC1P_label,PINCP,DPHY_label
+1,"Car, truck, or van",20,20,White alone,4000,No
+2,Subway or elevated,63,60,White alone,15200,No
+3,"Car, truck, or van",20,20,White alone,4000,No
+4,Subway or elevated,60,60,Black or African American alone,34300,No
+5,Walked,61,25,White alone,36000,No
+6,Subway or elevated,29,50,White alone,4700,No
+7,Walked,21,15,Black or African American alone,15000,No
+8,"Car, truck, or van",34,138,White alone,122900,No
+9,Bus or trolley bus,29,45,Black or African American alone,30000,No
+10,Subway or elevated,47,45,White alone,4200,No
+11,"Car, truck, or van",74,15,White alone,59600,No
+12,Subway or elevated,31,60,Some Other Race alone,39000,No
+13,Bus or trolley bus,73,35,White alone,2900,No
+14,"Car, truck, or van",40,60,Black or African American alone,60000,No
+15,Walked,67,5,White alone,38300,No
+16,Other method,59,20,White alone,95000,No
+17,Subway or elevated,43,45,Black or African American alone,50000,No
+18,Bus or trolley bus,58,90,Asian alone,10000,No
+19,Subway or elevated,44,40,Some Other Race alone,10400,No
+20,Subway or elevated,18,45,White alone,1000,No
+21,Subway or elevated,25,75,White alone,65000,No
+22,Bus or trolley bus,50,60,Black or African American alone,25000,No
+23,Subway or elevated,49,20,White alone,17900,No
+24,Subway or elevated,28,50,Asian alone,55000,No
+25,"Car, truck, or van",46,15,Black or African American alone,35900,No
+26,Bus or trolley bus,61,138,Black or African American alone,45000,No
+27,Subway or elevated,39,90,White alone,54000,No
+28,"Car, truck, or van",55,35,Black or African American alone,50000,No
+29,Subway or elevated,26,60,Asian alone,16200,No
+30,Bicycle,27,25,White alone,25000,No
+31,Subway or elevated,32,30,Asian alone,79850,No
+32,"Car, truck, or van",55,40,White alone,50000,No
+33,"Car, truck, or van",55,60,Some Other Race alone,80000,No
+34,"Car, truck, or van",33,60,Some Other Race alone,80000,No
+35,Railroad,32,60,White alone,1.00E+05,No
+36,Subway or elevated,62,60,Asian alone,60000,No
+37,Subway or elevated,45,45,Black or African American alone,30000,No
+38,Bus or trolley bus,41,60,Some Other Race alone,6700,No
+39,Subway or elevated,32,45,White alone,90000,No
+40,Subway or elevated,34,35,White alone,90000,No
+41,Walked,20,10,Asian alone,3000,No
+42,Taxicab,53,30,Black or African American alone,25000,No
+43,Subway or elevated,31,60,Black or African American alone,90000,No
+44,Ferryboat,53,60,White alone,660000,Yes
+45,Subway or elevated,57,35,Black or African American alone,110120,No
+46,Subway or elevated,53,60,Asian alone,102900,No
+47,"Car, truck, or van",38,30,Two or More Races,72200,No
+48,Walked,61,10,Asian alone,7000,No
+49,Walked,48,30,White alone,172000,No
+50,Subway or elevated,31,45,Black or African American alone,3700,Yes
+51,Subway or elevated,60,45,Black or African American alone,27000,No
+52,Subway or elevated,52,50,Asian alone,35000,No
+53,Walked,27,10,Asian alone,600,No
+54,Subway or elevated,53,60,Asian alone,13000,No
+55,Taxicab,27,20,Black or African American alone,21700,No
+56,Walked,50,10,White alone,69000,No
+57,"Car, truck, or van",23,25,Asian alone,25000,No
+58,"Car, truck, or van",25,20,White alone,20000,No
+59,Subway or elevated,60,55,White alone,60000,No
+60,Bus or trolley bus,69,55,White alone,26000,Yes
+61,Taxicab,58,25,Black or African American alone,38000,No
+62,Subway or elevated,76,40,White alone,101900,No
+63,"Car, truck, or van",71,45,White alone,47300,No
+64,Subway or elevated,29,30,Some Other Race alone,52000,No
+65,Other method,54,60,Black or African American alone,52000,No
+66,Subway or elevated,55,60,Asian alone,30000,No
+67,Subway or elevated,28,60,Black or African American alone,6000,Yes
+68,Subway or elevated,44,45,Some Other Race alone,19000,No
+69,"Car, truck, or van",55,30,Asian alone,1000,No
+70,Subway or elevated,23,60,Asian alone,20000,No
+71,Walked,48,15,Asian alone,8000,No
+72,"Car, truck, or van",27,10,White alone,42000,No
+73,Bus or trolley bus,27,90,Black or African American alone,10200,No
+74,"Car, truck, or van",52,15,White alone,9000,No
+75,Subway or elevated,21,15,White alone,4000,No
+76,Railroad,66,30,Black or African American alone,50000,No
+77,Railroad,58,138,Black or African American alone,24000,No
+78,"Car, truck, or van",29,30,White alone,50000,No
+79,Bus or trolley bus,46,60,Some Other Race alone,20000,No
+80,"Car, truck, or van",35,40,Asian alone,35000,No
+81,"Car, truck, or van",43,40,Asian alone,130000,No
+82,"Car, truck, or van",51,30,Black or African American alone,60000,No
+83,Subway or elevated,26,45,White alone,34000,No
+84,Bus or trolley bus,56,30,White alone,27000,No
+85,"Car, truck, or van",35,45,White alone,126000,No
+86,Bus or trolley bus,54,45,White alone,35000,No
+87,Subway or elevated,21,60,Some Other Race alone,60000,No
+88,Subway or elevated,42,45,White alone,1.00E+05,No
+89,Subway or elevated,60,40,White alone,37000,No
+90,Subway or elevated,40,90,White alone,171000,No
+91,Subway or elevated,38,70,White alone,45000,No
+92,Subway or elevated,43,50,White alone,40000,No
+93,Subway or elevated,26,80,White alone,35000,No
+94,"Car, truck, or van",33,30,White alone,60000,No
+95,Ferryboat,57,40,White alone,668000,No
+96,Subway or elevated,47,60,Asian alone,6000,No
+97,Subway or elevated,24,45,White alone,72000,No
+98,Subway or elevated,40,60,Asian alone,15000,No
+99,Bus or trolley bus,48,40,Black or African American alone,69000,No
+100,"Car, truck, or van",45,45,White alone,5900,No
+101,Subway or elevated,32,60,Some Other Race alone,68000,No
+102,"Car, truck, or van",26,40,White alone,80000,No
+103,Walked,34,10,White alone,25000,No
+104,Subway or elevated,44,138,Black or African American alone,42000,No
+105,Subway or elevated,65,90,Black or African American alone,78000,No
+106,Bus or trolley bus,42,10,Asian alone,36000,No
+107,Walked,28,15,Some Other Race alone,5800,No
+108,Walked,34,15,White alone,53000,No
+109,"Car, truck, or van",45,5,Two or More Races,180000,No
+110,"Car, truck, or van",34,10,White alone,50000,No
+111,Subway or elevated,33,45,White alone,73000,No
+112,"Car, truck, or van",26,20,Some Other Race alone,35000,No
+113,Subway or elevated,36,60,Two or More Races,30700,No
+114,Walked,57,15,Asian alone,50000,No
+115,"Car, truck, or van",67,30,White alone,196300,No
+116,Subway or elevated,27,45,White alone,65000,No
+117,"Car, truck, or van",19,15,Asian alone,50000,No
+118,"Car, truck, or van",20,45,Black or African American alone,13000,No
+119,Walked,46,10,White alone,8000,No
+120,Bus or trolley bus,61,60,White alone,6700,No
+121,Subway or elevated,25,20,White alone,65000,No
+122,"Car, truck, or van",50,15,White alone,21400,No
+123,Other method,54,20,Black or African American alone,51700,Yes
+124,Subway or elevated,64,50,Asian alone,33100,No
+125,Subway or elevated,43,50,Asian alone,10800,No
+126,Subway or elevated,27,45,White alone,56000,No
+127,Walked,60,15,White alone,80000,No
+128,"Car, truck, or van",42,30,White alone,80000,No
+129,"Car, truck, or van",50,45,Asian alone,32500,No
+130,Subway or elevated,24,40,Two or More Races,14000,No
+131,Subway or elevated,47,35,Asian alone,6000,No
+132,"Car, truck, or van",46,10,Asian alone,18600,No
+133,Subway or elevated,49,40,Asian alone,39000,No
+134,Subway or elevated,53,60,White alone,185000,No
+135,Subway or elevated,63,138,Some Other Race alone,11400,No
+136,Subway or elevated,60,50,White alone,40000,No
+137,"Car, truck, or van",47,25,Black or African American alone,102000,No
+138,Subway or elevated,48,60,Some Other Race alone,2100,No
+139,"Car, truck, or van",52,15,Black or African American alone,28000,No
+140,Subway or elevated,24,40,Two or More Races,72000,No
+141,Subway or elevated,39,70,Black or African American alone,80030,No
+142,"Car, truck, or van",30,10,White alone,70000,No
+143,Walked,30,15,White alone,3000,No
+144,Subway or elevated,33,45,White alone,62000,No
+145,Subway or elevated,23,40,White alone,31000,No
+146,Subway or elevated,56,60,Black or African American alone,32000,No
+147,Subway or elevated,51,30,White alone,660000,No
+148,Subway or elevated,62,90,White alone,58000,No
+149,Walked,45,15,Asian alone,30000,No
+150,"Car, truck, or van",56,60,Black or African American alone,42000,No
+151,Subway or elevated,30,80,White alone,65000,No
+152,Subway or elevated,42,30,White alone,20600,No
+153,"Car, truck, or van",29,10,Some Other Race alone,52000,No
+154,Bus or trolley bus,37,138,Some Other Race alone,18000,No
+155,Railroad,42,45,Some Other Race alone,125004,No
+156,"Car, truck, or van",31,45,White alone,70000,No
+157,"Car, truck, or van",28,90,Black or African American alone,15000,No
+158,Ferryboat,62,90,Black or African American alone,60010,No
+159,Subway or elevated,34,90,Two or More Races,20000,No
+160,Subway or elevated,56,70,Asian alone,12500,No
+161,Subway or elevated,35,60,White alone,98000,No
+162,Subway or elevated,56,70,White alone,47500,No
+163,Bus or trolley bus,27,100,Asian alone,13000,No
+164,"Car, truck, or van",44,30,White alone,7900,No
+165,Subway or elevated,50,36,White alone,104000,No
+166,Subway or elevated,60,75,Asian alone,76900,No
+167,Subway or elevated,36,40,Asian alone,91000,No
+168,Subway or elevated,58,60,Two or More Races,42000,No
+169,Bus or trolley bus,61,30,White alone,15000,No
+170,Subway or elevated,24,30,White alone,50000,No
+171,"Car, truck, or van",43,138,Asian alone,1.00E+05,No
+172,Subway or elevated,55,30,Black or African American alone,20000,No
+173,Bus or trolley bus,56,30,White alone,38000,No
+174,"Car, truck, or van",64,50,White alone,38000,No
+175,"Car, truck, or van",41,25,Black or African American alone,77000,No
+176,"Car, truck, or van",29,30,Black or African American alone,15000,No
+177,Subway or elevated,24,35,White alone,22000,No
+178,Subway or elevated,75,75,White alone,19300,No
+179,Subway or elevated,31,50,Asian alone,98400,No
+180,Walked,57,20,White alone,106300,No
+181,"Car, truck, or van",69,20,White alone,40600,No
+182,Walked,43,10,Some Other Race alone,20800,No
+183,Walked,32,15,White alone,80000,No
+184,Subway or elevated,40,65,Asian alone,85000,No
+185,Subway or elevated,35,59,Asian alone,32000,No
+186,"Car, truck, or van",45,60,Asian alone,37000,No
+187,Subway or elevated,51,138,White alone,55000,No
+188,"Car, truck, or van",48,15,White alone,6800,No
+189,Subway or elevated,52,70,Black or African American alone,25000,No
+190,Subway or elevated,53,30,White alone,47000,No
+191,Subway or elevated,76,30,White alone,385000,No
+192,Subway or elevated,46,40,White alone,60000,No
+193,"Car, truck, or van",48,138,Black or African American alone,35000,No
+194,Subway or elevated,70,90,White alone,114000,No
+195,Bus or trolley bus,33,90,Black or African American alone,120500,No
+196,Subway or elevated,55,30,White alone,660000,No
+197,"Car, truck, or van",36,15,Black or African American alone,8000,Yes
+198,Subway or elevated,66,75,Asian alone,6500,No
+199,Subway or elevated,51,75,Some Other Race alone,59600,No
+200,Walked,31,8,White alone,13000,No
+201,"Car, truck, or van",66,60,White alone,53000,No
+202,"Car, truck, or van",66,60,Some Other Race alone,36000,Yes
+203,Subway or elevated,56,25,Some Other Race alone,10000,No
+204,"Car, truck, or van",54,10,Two or More Races,45000,No
+205,"Car, truck, or van",45,25,Black or African American alone,42200,No
+206,Subway or elevated,37,60,White alone,47000,No
+207,Walked,30,15,White alone,40000,No
+208,Bicycle,28,15,White alone,78000,No
+209,Bus or trolley bus,74,40,Black or African American alone,12200,No
+210,Walked,45,30,White alone,25000,No
+211,Subway or elevated,26,30,Asian alone,27000,No
+212,"Car, truck, or van",52,45,Black or African American alone,58000,No
+213,"Car, truck, or van",60,60,White alone,50000,No
+214,Subway or elevated,56,85,White alone,64300,No
+215,Walked,19,20,White alone,4200,No
+216,Bicycle,21,15,White alone,4000,No
+217,Subway or elevated,46,40,Black or African American alone,39000,No
+218,Subway or elevated,54,60,Black or African American alone,25000,No
+219,Bus or trolley bus,52,138,Black or African American alone,70000,No
+220,Subway or elevated,59,60,Asian alone,18000,No
+221,"Car, truck, or van",37,45,White alone,63000,No
+222,"Car, truck, or van",37,20,Asian alone,13500,No
+223,Bus or trolley bus,53,40,Some Other Race alone,19000,No
+224,"Car, truck, or van",28,20,Black or African American alone,60000,No
+225,Bus or trolley bus,60,138,White alone,80000,No
+226,"Car, truck, or van",61,25,White alone,55000,No
+227,"Car, truck, or van",54,20,Some Other Race alone,44100,No
+228,Bus or trolley bus,52,50,Black or African American alone,42000,No
+229,Subway or elevated,18,60,Black or African American alone,10000,No
+230,"Car, truck, or van",44,20,Some Other Race alone,16400,No
+231,Walked,31,10,Asian alone,75500,No
+232,Subway or elevated,27,45,White alone,50000,No
+233,Bus or trolley bus,35,60,Some Other Race alone,6500,No
+234,Subway or elevated,18,70,Two or More Races,21100,No
+235,"Car, truck, or van",55,30,White alone,90000,No
+236,Subway or elevated,29,45,Black or African American alone,14300,No
+237,Subway or elevated,37,60,White alone,51000,No
+238,Bicycle,44,10,Asian alone,12700,No
+239,Subway or elevated,59,138,Black or African American alone,42000,No
+240,Subway or elevated,50,90,White alone,55600,No
+241,Subway or elevated,27,80,White alone,52000,No
+242,Subway or elevated,62,15,White alone,121000,No
+243,Subway or elevated,44,45,White alone,175000,No
+244,Subway or elevated,54,40,White alone,90000,No
+245,"Car, truck, or van",55,20,White alone,20000,No
+246,Subway or elevated,48,60,Black or African American alone,31200,No
+247,Railroad,38,69,Black or African American alone,97000,No
+248,Subway or elevated,26,60,Asian alone,1.00E+05,No
+249,Bus or trolley bus,51,138,Black or African American alone,48000,No
+250,Subway or elevated,36,45,White alone,45000,No
+251,Bicycle,29,15,White alone,96000,No
+252,"Car, truck, or van",55,30,White alone,12000,No
+253,"Car, truck, or van",49,30,White alone,110700,No
+254,Walked,43,5,Asian alone,35000,No
+255,Subway or elevated,56,35,White alone,43000,No
+256,"Car, truck, or van",61,20,White alone,1.00E+05,No
+257,"Car, truck, or van",59,80,Some Other Race alone,91000,No
+258,Bus or trolley bus,58,30,White alone,104000,No
+259,Subway or elevated,62,45,Asian alone,88500,No
+260,"Car, truck, or van",49,40,Black or African American alone,36000,No
+261,Subway or elevated,55,50,Some Other Race alone,20000,No
+262,Subway or elevated,47,60,Asian alone,37000,No
+263,Railroad,58,75,White alone,44000,No
+264,Subway or elevated,29,20,White alone,250500,No
+265,Subway or elevated,58,35,Asian alone,10400,No
+266,Bus or trolley bus,28,60,Some Other Race alone,1100,No
+267,"Car, truck, or van",44,15,White alone,182000,No
+268,Subway or elevated,65,50,White alone,35000,No
+269,Subway or elevated,29,60,White alone,50000,No
+270,Subway or elevated,54,45,Some Other Race alone,72000,No
+271,Subway or elevated,53,90,White alone,114040,No
+272,Other method,53,138,Black or African American alone,28000,No
+273,"Car, truck, or van",58,60,Two or More Races,50200,No
+274,"Car, truck, or van",35,45,Two or More Races,93000,No
+275,Subway or elevated,51,35,Black or African American alone,57200,No
+276,Bus or trolley bus,35,75,Black or African American alone,70000,No
+277,Bus or trolley bus,59,35,White alone,20000,No
+278,Subway or elevated,32,45,Asian alone,110000,No
+279,Subway or elevated,40,30,Some Other Race alone,36000,No
+280,Subway or elevated,45,40,Black or African American alone,40000,No
+281,Bus or trolley bus,45,40,Some Other Race alone,4000,No
+282,Bus or trolley bus,38,30,Black or African American alone,60000,No
+283,Subway or elevated,32,30,Asian alone,800,No
+284,Subway or elevated,54,90,White alone,40000,No
+285,Subway or elevated,65,45,White alone,660000,No
+286,Subway or elevated,30,30,White alone,90000,No
+287,"Car, truck, or van",56,30,Black or African American alone,38000,No
+288,Bus or trolley bus,61,60,White alone,60000,No
+289,Subway or elevated,26,30,White alone,4000,No
+290,Walked,49,10,Asian alone,30000,No
+291,"Car, truck, or van",21,15,Black or African American alone,11000,No
+292,Bicycle,29,20,White alone,16000,No
+293,Subway or elevated,53,50,Asian alone,8400,No
+294,"Car, truck, or van",30,15,White alone,18000,No
+295,Subway or elevated,37,90,Black or African American alone,58000,No
+296,Subway or elevated,25,45,Asian alone,50000,No
+297,Subway or elevated,49,20,Black or African American alone,210,No
+298,Subway or elevated,21,50,Some Other Race alone,17100,No
+299,Bus or trolley bus,41,90,Black or African American alone,20800,No
+300,Subway or elevated,48,60,Asian alone,41000,No
+301,"Car, truck, or van",42,40,Black or African American alone,28000,No
+302,Walked,74,5,Black or African American alone,16500,Yes
+303,Subway or elevated,27,30,White alone,60000,No
+304,"Car, truck, or van",61,30,Some Other Race alone,110000,No
+305,Bus or trolley bus,60,75,White alone,55000,No
+306,Subway or elevated,36,60,Asian alone,80000,No
+307,Subway or elevated,28,40,Asian alone,25000,No
+308,Subway or elevated,36,50,Asian alone,102000,No
+309,Subway or elevated,36,30,Asian alone,45000,No
+310,"Car, truck, or van",58,20,Black or African American alone,98000,No
+311,Bus or trolley bus,26,30,White alone,10000,No
+312,Subway or elevated,63,90,Black or African American alone,88000,No
+313,Other method,34,35,Asian alone,38000,No
+314,Subway or elevated,40,40,Asian alone,80000,No
+315,"Car, truck, or van",58,45,Black or African American alone,60000,No
+316,Subway or elevated,51,30,White alone,62000,No
+317,Subway or elevated,30,50,Two or More Races,6000,No
+318,Subway or elevated,54,75,Black or African American alone,40000,No
+319,Subway or elevated,30,60,White alone,290,No
+320,Bus or trolley bus,50,50,Black or African American alone,28000,No
+321,Subway or elevated,61,45,White alone,15000,No
+322,Railroad,70,138,Black or African American alone,19600,No
+323,Ferryboat,35,30,White alone,250000,No
