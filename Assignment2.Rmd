@@ -1,0 +1,322 @@
+---
+title: "Assignment2"
+author: "Mary Geschwindt"
+date: "9/15/2020"
+output: 
+  html_document:
+    theme: paper
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Setting up the Assignment
+
+My first step will be to load the tidyverse and ggplot libraries, and any other libraries I need for this assignment:
+
+```{r, message=FALSE, results='hide'}
+library(tidyverse)
+library(ggplot2)
+library(scales)
+library(knitr)
+```
+
+My next step is to read my Assignment 1 dataset.
+
+```{r, message=FALSE, results='hide'}
+nyc_data <- read_csv("women_nyctransport2018.csv")
+attach(nyc_data)
+```
+
+
+# Variables
+
+Here are the variables I used for assignment 1. My population consists of women in New York City.
+
+1. Means of transportation to work (categorical): JWTR
+2. Age (continuous): AGEP
+3. Travel time to work (continuous): JWMNP
+4. Ambulatory difficulty (categorical): DPHY
+5. Race (categorical): RAC1P
+6. Income (continuous): PINCP
+
+## Distribution of Continuous Variables
+
+I will calculate summary statistics for my continuous variables (AGEP, JWMNP, PINCP).
+
+```{r, message=FALSE, results='hide'}
+age_summary <- summary(nyc_data$AGEP)
+age_sd <- sd(AGEP, na.rm = TRUE)
+age_mean_int <- t.test(AGEP)
+time_summary <- summary(nyc_data$JWMNP)
+time_sd <- sd(JWMNP, na.rm = TRUE)
+time_mean_int <- t.test(JWMNP)
+income_summary <- summary(nyc_data$PINCP)
+income_sd <- sd(PINCP, na.rm = TRUE)
+income_mean_int <- t.test(PINCP)
+```
+
+Next I will format these summary statistics in a table:
+
+```{r, message=FALSE, results='hide'}
+summary_table <- tibble(
+  Statistic = c("Sample Mean",
+                "Median",
+                "Standard deviation",
+                "Interquartile range",
+                "Population mean (95% confidence)"),
+  'Age (years)' = c(prettyNum(age_summary["Mean"], digits = 3),
+                    age_summary["Median"],
+                    prettyNum(age_sd, digits = 3),
+                    paste(age_summary["1st Qu."], "to",
+                          age_summary["3rd Qu."]),
+                    paste(prettyNum(age_mean_int$conf.int[1],
+                                    digits = 3), "to",
+                          prettyNum(age_mean_int$conf.int[2],
+                                    digits = 3))),
+  'Travel Time to Work (minutes)' = c(paste(prettyNum(time_summary["Mean"], digits = 3)),
+                                            paste(prettyNum(time_summary["Median"], digits = 3)),
+                                            paste(prettyNum(time_sd, digits = 3)),
+                                            paste(prettyNum(time_summary["1st Qu."], digits = 3), "to",
+                                                  prettyNum(time_summary["3rd Qu."], digits = 3)),
+                                            paste(prettyNum(time_mean_int$conf.int[1], digits = 3), "to",
+                                                  prettyNum(time_mean_int$conf.int[2], digits = 3))),
+  'Income (dollars)' = c(paste(prettyNum(income_summary["Mean"], digits = 7)),
+                         paste(prettyNum(income_summary["Mean"], digits = 7)),
+                         paste(prettyNum(income_sd, digits = 7)),
+                         paste(prettyNum(income_summary["1st Qu."], digits = 7), "to",
+                               prettyNum(income_summary["3rd Qu."], digits = 7)),
+                         paste(prettyNum(income_mean_int$conf.int[1], digits = 7), "to",
+                               prettyNum(income_mean_int$conf.int[2], digits = 7))))
+  knitr::kable(summary_table,
+               caption = "Characteristics for Women in New York City")
+
+```
+
+## Histograms
+
+I will now create a histogram for each of the continuous variables.
+
+### Age Histogram
+
+```{r, message=FALSE, results='hide'}
+ggplot(nyc_data,
+       aes(x=AGEP)) +
+  geom_histogram(color = "gray", binwidth = 2) +
+  scale_x_continuous(name = "Age (years)") +
+  scale_y_continuous(name = "Number of People in Sample") +
+  stat_bin(binwidth = 1) +
+  theme_minimal()
+```
+
+#### Age Distribution Summary
+
+The distribution for age across my sample population (women in NYC who commute to work) is uneven. It is possible, although it would require me to analyze and compare other variables, that the age of women commuting to work in NYC follows certain trends related to reasons why women would or would not be working (for example, I could compare a variable for women who have given birth in the past 12 months and see if having children is at all related to decreases in the number of women commuting to work in NYC in their 30s).
+
+The average age of a woman in NYC commuting to work is about 44 years old. This number is also very close to the middle value of all of the ages lined up in order, which is 45 years old. The standard deviation, or average difference between all of the ages present in this dataset is 14. This means that the average of all of the ages and their difference to one another is no greater than 14 years.
+
+### Travel Time to Work Histogram
+
+```{r, message=FALSE, results='hide'}
+ggplot(nyc_data,
+       aes(x=JWMNP)) +
+  geom_histogram(color = "gray", binwidth = 10) +
+  scale_x_continuous(name = "Travel Time to Work (minutes)") +
+  scale_y_continuous(name = "Number of People in Sample") +
+  theme_minimal()
+```
+
+#### Travel Time to Work Distribution Summary
+
+This distribution appears to be a little more regular than the age distribution. Generally, the distribution is right skewed, meaning that a majority of the people in my sample have a commute time that is about an hour or less than an hour. There are a handful of outliers who have a commute time of over 2 hours. These outliers cause the average commute time to be just slightly higher, at about 46 minutes, than what is actually experienced by most people in the sample for their commute times. The average difference across the sample is about 30 minutes (29.4 to be exact).
+
+### Income Histogram
+
+```{r, message=FALSE, results='hide'}
+ggplot(nyc_data,
+       aes(x=PINCP)) +
+  geom_histogram() +
+  scale_x_continuous(name = "Income (dollars)",
+                     label = comma,
+                     limits = c(0, 700000)) +
+  scale_y_continuous("Number of People in Sample") +
+  theme_minimal()
+```
+
+#### Income Distribution Summary
+
+This distribution is skewed to the right.The median value and the average value are the same, despite the fact that there are significant outliers, or those who earn an income which is significantly higher than the rest of the population. There is an incredibly large standard deviation, or average difference across the incomes reported for this sample population, at about $87,000. I suspect that the few, significantly higher incomes reported at around $700,000 are causing the average difference between other reported incomes to be very high, since the next highest income is just below $400,000, and the majority of incomes reported are around or below $100,000.
+
+## Distribution of Categorical Variables
+
+My categorical variables include Means of Transportation to Work (JWTR), Ambulatory Difficulty (DPHY), and Race (RAC1P).
+
+I will show one table for each of my categorical variables which shows the proportion of each category within each variable.
+
+### Means of Transportation to Work
+
+#### Calculating Sample Shares Using a T-Test
+
+First I'll get a list of all possible values for JWTR:
+
+```{r, message=FALSE, results='hide'}
+transport <- unique(JWTR_label)
+transport
+```
+
+Now I will do a t-test for each of these individual categories withing the Means of Transportation to Work category:
+
+```{r, message=FALSE, results='hide'}
+private_vehicle <- t.test(JWTR_label == transport[1])
+subway <- t.test(JWTR_label == transport[2])
+walked <- t.test(JWTR_label == transport[3])
+bus <- t.test(JWTR_label == transport[4])
+other <- t.test(JWTR_label == transport[5])
+bicycle <- t.test(JWTR_label == transport[6])
+railroad <- t.test(JWTR_label == transport[7])
+taxi <- t.test(JWTR_label == transport[8])
+ferry <- t.test(JWTR_label == transport[9])
+shares <- tibble()
+```
+
+Finally I will create a table with proportions and confidence intervals:
+
+```{r, message=FALSE, results='hide'}
+transport_shares <- tibble("Transport" = c("Car, truck, or van",
+                                             "Subway or elevated",
+                                             "Walked",
+                                             "Bus or trolley bus",
+                                             "Other method",
+                                             "Bicycle",
+                                             "Railroad",
+                                             "Taxicab",
+                                             "Ferryboat"),
+                           "Sample Proportion" = c(paste(prettyNum(private_vehicle$estimate*100, digits = 3), "%"),
+                                                      paste(prettyNum(subway$estimate*100, digits = 3), "%"),
+                                                      paste(prettyNum(walked$estimate*100, digits = 3), "%"),
+                                                      paste(prettyNum(bus$estimate*100, digits = 3), "%"),
+                                                      paste(prettyNum(other$estimate*100,digits = 3), "%"),
+                                                      paste(prettyNum(bicycle$estimate*100,digits = 3), "%"),
+                                                      paste(prettyNum(railroad$estimate*100,digits = 3), "%"),
+                                                      paste(prettyNum(taxi$estimate*100,digits = 3), "%"),
+                                                      paste(prettyNum(ferry$estimate*100,digits = 3), "%")),
+                           "95-percent Confidence Interval" = c(paste(prettyNum(private_vehicle$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(private_vehicle$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(subway$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(subway$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(walked$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(walked$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(bus$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(bus$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(other$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(other$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(bicycle$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(bicycle$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(railroad$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(railroad$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(taxi$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(taxi$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                               paste(prettyNum(ferry$conf.int[1]*100, digits = 3), "% to",
+                                                                   prettyNum(ferry$conf.int[2]*100, digits = 3), "%", sep = "")))
+
+knitr::kable(transport_shares, caption = "New York City Census Tracts")
+```
+
+#### Means of Transportation to Work Distribution Summary
+
+Close to half of all of the people included in my sample, women who commute to work in NYC, rely on the NYC subway in order to get to work. The next highest proportion goes to use of the car, truck, or van in order to get to work, which is the preferred method by a quarter of the population. Bus, another form of public transportation, carries the third highest proportion at 11.5%. All other methods are used by less than 10% of the population. Only looking at this data would lead me to assume that subways, private cars, and buses are more accessible for members of my sample population, but I would need to look at other variables in order to confirm this assumption.
+
+### Ambulatory Difficulty
+
+#### Calculating Sample Shares Using a T-Test
+
+List of possible values:
+
+```{r, message=FALSE, results='hide'}
+disability_status <- unique(nyc_data$DPHY_label)
+disability_status
+```
+
+I will do a t-test for these two categories for ambulatory difficulty (or physical disability):
+
+```{r, message=FALSE, results='hide'}
+not_disabled <- t.test(DPHY_label == disability_status[1])
+disabled <- t.test(DPHY_label == disability_status[2])
+```
+
+Now I will visualize these categories and values in a table:
+
+```{r, message=FALSE, results='hide'}
+disability_shares <- tibble("Ambulatory Difficulty" = c("Not Disabled",
+                                                        "Disabled"),
+                           "Sample Proportion" = c(paste(prettyNum(not_disabled$estimate*100, digits = 3), "%"),
+                                                   paste(prettyNum(disabled$estimate*100, digits = 3), "%")),
+                           "95-percent Confidence Interval" = c(paste(prettyNum(not_disabled$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(not_disabled$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(disabled$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(disabled$conf.int[2]*100, digits = 3), "%", sep = "")))
+
+knitr::kable(disability_shares, caption = "New York City Census Tracts")
+```
+
+#### Ambulatory Difficulty Distribution Summary
+
+A large majority of my sample, at 97.5%, are not physically disabled. I had suspected this, because I am aware that there are many difficulties faced by people with disabilities to get to work, especially in NYC where navigating the public transportation (which does not even have elevators in 75% of its stations) can be impossible. However, I am aware that I have an extremely biased perspective when I look at this data. In order to answer my initial question which I posed at the end of Assignment 1, which is about the accessibility and equity of transportation systems in NYC, I would have to do a much more extensive analysis of other variables, and even include qualitative analysis.
+
+### Race
+
+#### Calculating Sample Shares Using a T-Test
+
+List of possible values:
+
+```{r, message=FALSE, results='hide'}
+race <- unique(nyc_data$RAC1P_label)
+race
+```
+
+I will create a t-test for each of these categories for race:
+
+```{r, message=FALSE, results='hide'}
+white <- t.test(RAC1P_label == race[1])
+black <- t.test(RAC1P_label == race[2])
+other_alone <- t.test(RAC1P_label == race[3])
+asian <- t.test(RAC1P_label == race[4])
+two_more <- t.test(RAC1P_label == race[5])
+```
+
+Finally, I will format the t-test values for each category in a table:
+
+```{r, message=FALSE, results='hide'}
+race_shares <- tibble("Race" = c("White Alone",
+                                 "Black or African American Alone",
+                                 "Some Other Race Alone",
+                                 "Asian Alone",
+                                 "Two or More Races"),
+                           "Sample Proportion" = c(paste(prettyNum(white$estimate*100, digits = 3), "%"),
+                                                   paste(prettyNum(black$estimate*100, digits = 3), "%"),
+                                                   paste(prettyNum(other_alone$estimate*100, digits = 3), "%"),
+                                                   paste(prettyNum(asian$estimate*100, digits = 3), "%"),
+                                                   paste(prettyNum(two_more$estimate*100, digits = 3), "%")),
+                           "95-percent Confidence Interval" = c(paste(prettyNum(white$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(white$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(black$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(black$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(other_alone$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(other_alone$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(asian$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(asian$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                paste(prettyNum(two_more$conf.int[1]*100, digits = 3), "% to",
+                                                                      prettyNum(two_more$conf.int[2]*100, digits = 3), "%", sep = "")))
+
+knitr::kable(race_shares, caption = "New York City Census Tracts")
+
+```
+
+#### Race Distribution Summary
+
+Almost half of the people in my sample are white alone. Black or African American alone follows second at almost a quarter of the sample population. Asian alone is close to Black or African American alone. I had initially thought, prior to calculating the 95_percent confidence interval and t-test, that the other races should be further broken up into categories. I'm uncertain now if it would make sense to do so, because this category represents only 10% of the sample population and I'm unsure if dividing this number into smaller and smaller percentages would reveal anything further about minority women who commute to work in NYC and the means of transportation they use.
+
