@@ -1,0 +1,453 @@
+---
+title: "Assignment3"
+author: "Mary Geschwindt"
+date: "9/18/2020"
+output:
+  html_document:
+    theme: paper
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment Setup
+
+My first step is to load the libraries I'll need for this assignment:
+
+```{r message=FALSE, results='hide'}
+library(tidyverse)
+library(ggplot2)
+```
+
+Now I'll load my csv file from Assignment 1:
+
+```{r message=FALSE, results='hide'}
+women_nyctransport2018 <- read.csv("women_nyctransport2018.csv")
+```
+
+As a reminder, my variables include:
+
+1. Means of transportation to work (categorical): JWTR
+2. Age (continuous): AGEP
+3. Travel time to work (continuous): JWMNP
+4. Ambulatory difficulty (categorical): DPHY
+5. Race (categorical): RAC1P
+6. Income (continuous): PINCP
+
+And my population is women in New York City who commute to work.
+
+## Relationship Between Two Continuous Variables
+
+### Age and Travel Time to Work
+
+```{r message=FALSE}
+correlation1 <- cor.test(women_nyctransport2018$AGEP, women_nyctransport2018$JWMNP)
+
+correlation1
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = AGEP, y = JWMNP)) +
+  geom_point(size = 0.5, alpha = 0.25, position = "jitter") +
+  geom_smooth() +
+  theme_bw() +
+  scale_x_continuous(name = "Age (years)") +
+  scale_y_continuous(name = "Travel Time to Work (minutes)") +
+  annotate(geom = "text", x = 21, y = 155,
+           label = paste("Correlation (95-percent confidence):",
+                         prettyNum(correlation1$conf.int[1], digits = 3),
+                                   "to",
+                                   prettyNum(correlation1$conf.int[2], digits = 3)),
+                         hjust = 0)
+```
+
+There is a weak correlation between age and travel time to work for people in my sample population. The p-value is about 0.005, which is close to 0, meaning that the correlation is weak but a relationship does exist. Additionally, because the 95-percent confidence intervals are positive numbers, the correlation is positive.
+
+### Income and Age
+
+```{r message=FALSE}
+correlation2 <- cor.test(women_nyctransport2018$PINCP, women_nyctransport2018$AGEP)
+
+correlation2
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = PINCP, y = AGEP)) +
+  geom_point(size = 0.5, alpha = 0.25, position = "jitter") +
+  geom_smooth() +
+  theme_bw() +
+  scale_x_continuous(name = "Income (dollars)") +
+  scale_y_continuous(name = "Age (years)") +
+  annotate(geom = "text", x = 16, y = 75,
+           label = paste("Correlation (95-percent confidence):",
+                         prettyNum(correlation2$conf.int[1], digits = 6),
+                                   "to",
+                                   prettyNum(correlation2$conf.int[2], digits = 6)),
+                         hjust = 0)
+```
+
+There is a weak correlation between age and income. With a p-value of about 0.007, this correlation is stronger than the correlation which was calculated for the previous example (showing age and travel time to work), but because this value is so close to 0, the correlation is weak. However, because it is not exactly 0, a relationship exists between the the two variables. Because both 95-percent confidence interval numbers are positive, the correlation is also positive.
+
+### Income and Travel Time to Work
+
+```{r message=FALSE}
+correlation3 <- cor.test(women_nyctransport2018$PINCP, women_nyctransport2018$JWMNP)
+
+correlation3
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x=PINCP, y=JWMNP)) +
+  geom_point(size = 0.5, alpha = 0.25, position = "jitter") +
+  geom_smooth() +
+  theme_bw() +
+  scale_x_continuous(name = "Income (dollars)") +
+  scale_y_continuous(name = "Travel Time to Work (minutes)") +
+  annotate(geom = "text", x = 16, y = 120,
+           label = paste("Correlation (95-percent confidence):",
+                         prettyNum(correlation3$conf.int[1], digits = 6),
+                                   "to",
+                                   prettyNum(correlation3$conf.int[2], digits = 6)),
+                         hjust = 0)
+```
+
+There seems to be a strong correlation between travel time to work and income. The p-value is about 0.86, which is close to 1; the closer the p-value is to either -1 or 1, the stronger the correlation. This correlation appears to be especially stronger than the previous two calculations for the other continuous variables. However, because the 95-percent confidence interval spans between a negative and a positive number, this means that the correlation could in fact be 0. Therefore, it is not possible to determine with at least 95-percent confidence whether there is a correlation.
+
+## Relationship Between a Continous Variable and a Binary Variable
+
+### Age and Ambulatory Difficulty
+
+```{r message=FALSE}
+difference1 = t.test(AGEP ~ DPHY_label, data = women_nyctransport2018)
+
+difference1
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = DPHY_label, y = AGEP)) +
+  geom_violin() +
+  theme_bw() +
+  scale_x_discrete(name = "Does this person have an ambulatory difficulty?",
+                   labels = c("No", "Yes")) +
+  scale_y_continuous(name = "Age (years)") +
+  annotate(geom = "text", x = 5, y = 5, size = 3,
+           label = paste("Difference in means/n(95% confidence):\n",
+                         prettyNum(abs(difference1$conf.int[2]),
+                                   digits = 0), "to",
+                         prettyNum(abs(difference1$conf.int[1]),
+                                   digits = 0),
+                         sep = "")) +
+  annotate(geom = "text", x = 1, y = difference1$estimate[1], size = 3,
+           label = paste("Mean (95% confidence):\n",
+                         prettyNum((difference1$estimate[1]), digits = 0))) +
+  annotate(geom = "text", x = 2, y = difference1$estimate[2], size = 3,
+           label = paste("Mean (95% confidence):\n",
+                         prettyNum(difference1$estimate[2], digits = 0)))
+```
+
+A p-value of about 0.29 indicates that there is a correlation; however, the 95-percent confidence interval spans a negative and a positive number. This means that the correlation has the possibility of being 0, and therefore it is not possible with 95-percent confidence to determine if a correlation really exists between age and ambulatory difficulty.
+
+### Travel Time to Work and Ambulatory Difficulty
+
+```{r message=FALSE}
+difference2 = t.test(JWMNP ~ DPHY_label, data = women_nyctransport2018)
+
+difference2
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = DPHY_label, y = JWMNP)) +
+  geom_violin() +
+  theme_bw() +
+  scale_x_discrete(name = "Does this person have an ambulatory difficulty?",
+                   labels = c("No", "Yes")) +
+  scale_y_continuous(name = "Travel Time to Work (minutes)") +
+  annotate(geom = "text", x = 5, y = 5, size = 3,
+           label = paste("Difference in means/n(95% confidence):\n",
+                         prettyNum(abs(difference2$conf.int[2]),
+                                   digits = 0), "to",
+                         prettyNum(abs(difference2$conf.int[1]),
+                                   digits = 0),
+                         sep = "")) +
+  annotate(geom = "text", x = 1, y = difference2$estimate[1], size = 3,
+           label = paste("Mean (95% confidence):\n",
+                         prettyNum((difference2$estimate[1]), digits = 0))) +
+  annotate(geom = "text", x = 2, y = difference2$estimate[2], size = 3,
+           label = paste("Mean (95% confidence):\n",
+                         prettyNum(difference2$estimate[2], digits = 0)))
+
+```
+
+There correlation between travel time to work and ambulatory difficulty appears to have a correlation as it has a p-value of 0.42. It is not possible to be 95-percent confident that there is a correlation, because the 95-percent confidence intervals span from a negative to a positive number.
+
+### Income and Ambulatory Difficulty
+
+```{r message=FALSE}
+difference3 = t.test(PINCP ~ DPHY_label, data = women_nyctransport2018)
+
+difference3
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = DPHY_label, y = PINCP)) +
+  geom_violin() +
+  theme_bw() +
+  scale_x_discrete(name = "Does this person have an ambulatory difficulty?",
+                   labels = c("No", "Yes")) +
+  scale_y_continuous(name = "Income (dollars)") +
+  annotate(geom = "text", x = 5, y = 5, size = 3,
+           label = paste("Difference in means/n(95% confidence):\n",
+                         prettyNum(abs(difference3$conf.int[2]),
+                                   digits = 0), "to",
+                         prettyNum(abs(difference3$conf.int[1]),
+                                   digits = 0),
+                         sep = "")) +
+  annotate(geom = "text", x = 1, y = difference3$estimate[1], size = 3,
+           label = paste("Mean (95% confidence):\n",
+                         prettyNum((difference3$estimate[1]), digits = 0))) +
+  annotate(geom = "text", x = 2, y = difference3$estimate[2], size = 3,
+           label = paste("Mean (95% confidence):\n",
+                         prettyNum(difference3$estimate[2], digits = 0)))
+```
+
+The correlation between these two variables appears to be a strong, with a p-value of about 0.6, but once again, the 95-percent confidence interval spans a negative and positive number, so I cannot be certain whether there is a relationship between income and ambulatory difficulty. I do want to make note of the voilin plot, and the fact that the voilin plot for the "Yes" category indicates that people in my sample population with an ambulatory difficulty are more likely to have a lower income, as the violin's "base" at the bottom of this chart is much wider than the same income for the "No" category. I'm beginning to wonder if the very high incomes can be considered "outliers" in the sense that there is a very large gap between these highest incomes, and the next highest (which are several hundred thousand dollars apart).
+
+## Relationship Between Continuous Variable and a Categorical Variable (three or more levels)
+
+### Age and Means of Transportation
+
+```{r message=FALSE}
+anova1 <- aov(AGEP ~ JWTR_label, data = women_nyctransport2018)
+
+summary(anova1)
+```
+
+```{r message=FALSE}
+differences1 <- TukeyHSD(anova1)
+
+as_tibble(cbind(pair = row.names(differences1$JWTR_label),
+                differences1$JWTR_label))
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = JWTR_label, y = AGEP)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_x_discrete(name = "Means of Transportation to Work",
+                  labels = c("Bicycle",
+                                  "Bus or\n trolley bus",
+                                  "Car\n truck\n or van",
+                                  "Ferryboat",
+                                  "Other", 
+                                  "Railroad",
+                                  "Subway\n or elevated",
+                                  "Taxicab",
+                                  "Walked")) +
+  scale_y_continuous(name = "Age (years)")
+```
+
+There is only one positive correlation between age and the following means of transportation to work due to the fact that the 95-percent confidence intervals are positive numbers: a combination of taking the bus or trolley bus and a bicycle to work. All other means of transportation to work have 95-percent confidence intervals which range between a negative and a positive number.
+
+### Travel Time and Means of Transportation
+
+```{r message=FALSE}
+anova2 <- aov(JWMNP ~ JWTR_label, data = women_nyctransport2018)
+
+summary(anova2)
+```
+
+```{r message=FALSE}
+differences2 <- TukeyHSD(anova2)
+
+as_tibble(cbind(pair = row.names(differences2$JWTR_label),
+                differences2$JWTR_label))
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = JWTR_label, y = JWMNP)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_x_discrete(name = "Means of Transportation to Work",
+                  labels = c("Bicycle",
+                                  "Bus or\n trolley bus",
+                                  "Car\n truck\n or van",
+                                  "Ferryboat",
+                                  "Other", 
+                                  "Railroad",
+                                  "Subway\n or elevated",
+                                  "Taxicab",
+                                  "Walked")) +
+  scale_y_continuous(name = "Travel Time to Work (minutes)")
+```
+
+The following means of transportation to work present a positive correlation between these means and travel time: bus or trolley bus and bicycle; railroad and bicycle; subway or elevated and bicycle; railroad and car, truck, or van; and subway or elevated and car, truck, or van.
+
+The following means of transportation to work present a negative correlation between these means and travel time: car, truck, or van and bus or trolley bus; walked and bus or trolley bus; walked and car, truck, or van; walked and other method; walked and railroad; and walked and subway or elevated.
+
+I had previously expected the bicycle and walking to have a strong positive correlation with travel times, based on personal experience of using all of these methods of transportation at some point as my commute to work.
+
+### Income and Means of Transportation
+
+```{r message=FALSE}
+anova3 <- aov(PINCP ~ JWTR_label, data = women_nyctransport2018)
+
+summary(anova3)
+```
+
+```{r message=FALSE}
+differences3 <- TukeyHSD(anova3)
+
+as_tibble(cbind(pair = row.names(differences3$JWTR_label),
+                differences3$JWTR_label))
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = JWTR_label, y = PINCP)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_x_discrete(name = "Means of Transportation to Work",
+                  labels = c("Bicycle",
+                                  "Bus or\n trolley bus",
+                                  "Car\n truck\n or van",
+                                  "Ferryboat",
+                                  "Other", 
+                                  "Railroad",
+                                  "Subway\n or elevated",
+                                  "Taxicab",
+                                  "Walked")) +
+  scale_y_continuous(name = "Income (dollars)")
+```
+
+The following means of transportation to work present a positive correlation between these means and income: ferryboat and bicycle; ferryboat and bus or trolley bus; and ferryboat and car, truck, or van.
+
+The following means of transportation to work present a negative correlation between these means and income: other method and ferryboat; subway or elevated and ferryboat; taxicab and ferryboat; and walked and ferryboat.
+
+In order to understand what's happening with the relationship between income and taking a ferryboat as part of one's commute to work, I would be interested in looking at more variables, such as location and average neighborhood incomes for those locations to see why there seems to be a consistent correlation between taking the ferry and income. I am interesting in seeing if location plays a part in availability to other means of transporations, and if neighborhoods where ferryboats are only available tend to have a certain average income.
+
+### Travel Time and Race
+
+```{r message=FALSE}
+anova4 <- aov(JWMNP ~ RAC1P_label, data = women_nyctransport2018)
+
+summary(anova4)
+```
+
+```{r message=FALSE}
+differences4 <- TukeyHSD(anova4)
+
+as_tibble(cbind(pair = row.names(differences4$RAC1P_label),
+                differences4$RAC1P_label))
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = RAC1P_label, y = JWMNP)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_x_discrete(name = "Race",
+                  labels = c("Asian",
+                          "Black or\n African\n American",
+                          "Some Other\n Race\n Alone",
+                          "Two or\n More\n Races",
+                          "White Alone")) +
+  scale_y_continuous(name = "Travel Time to Work (minutes)")
+```
+
+The following races present a positive correlation between these race categories and travel time to work: Black or African American alone and Asian alone.
+
+The following races present a negative correlation between these race categories and travel time to work: White alone and Black or African American alone.
+
+### Income and Race
+
+```{r message=FALSE}
+anova5 <- aov(PINCP ~ RAC1P_label, data = women_nyctransport2018)
+
+summary(anova5)
+```
+
+```{r message=FALSE}
+differences5 <- TukeyHSD(anova5)
+
+as_tibble(cbind(pair = row.names(differences5$RAC1P_label),
+                differences5$RAC1P_label))
+```
+
+```{r message=FALSE}
+ggplot(women_nyctransport2018, aes(x = RAC1P_label, y = PINCP)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_x_discrete(name = "Race",
+                  labels = c("Asian",
+                          "Black or\n African\n American",
+                          "Some Other\n Race\n Alone",
+                          "Two or\n More\n Races",
+                          "White Alone")) +
+  scale_y_continuous(name = "Income (dollars)")
+```
+
+The following races present a positive correlation between these race categories and income: white alone and Asian alone; and white alone and Black or African American alone.
+
+There are no negative correlations.
+
+## Relationships Between Categorical Variables
+
+### Means of Transportation to Work and Ambulatory Difficulty
+
+```{r message=FALSE}
+chi_sq1 <- chisq.test(women_nyctransport2018$JWTR_label, women_nyctransport2018$DPHY_label)
+
+chi_sq1
+```
+
+```{r message=FALSE}
+chi_sq1$observed
+```
+
+```{r message=FALSE}
+chi_sq1$expected
+```
+
+There seems to be a correlation, with a p-value of about 0.04, between ambulatory difficulty and means of transportation to work.
+
+### Means of Transportation to Work and Race
+
+```{r message=FALSE}
+chi_sq2 <- chisq.test(women_nyctransport2018$JWTR_label, women_nyctransport2018$RAC1P_label)
+
+chi_sq2
+```
+
+```{r message=FALSE}
+chi_sq2$observed
+```
+
+```{r message=FALSE}
+chi_sq2$expected
+```
+
+With a p-value of about 0.009, there is a correlation between race and means of transportation to work. Because the p-value is so close to 0, the correlation is weak, but a relationship does exist.
+
+### Ambulatory Difficulty and Race
+
+```{r message=FALSE}
+chi_sq3 <- chisq.test(women_nyctransport2018$DPHY_label, women_nyctransport2018$RAC1P_label)
+
+chi_sq3
+```
+
+```{r message=FALSE}
+chi_sq3$observed
+```
+
+```{r message=FALSE}
+chi_sq3$expected
+```
+
+There is a slightly stronger correlation between ambulatory difficulty and race than between race and means of transportation. The p-value is about 0.09, which is greater than the p-value calculated for the previous test.
+
+## Assignment 3 Conclusion
+
+There were several results which I did not expect to see when I did each of these tests. For example, I expected some variables, like travel time to work and ambulatory difficulty to have a strong correlation, yet I cannot be 95-percent confident that there even is a correlation between these two variables. Additionally, I did not expect there to be the possibility that the correlation between age and ambulatory difficulty could be nonexistent, if the p-value has a possibility of being 0. I previously held an assumption that the older people got, the more likely they may develop a mobility disability, and therefore assumed this correlation existed. This exercise has proven to me the importance of not making assumptions based on personal observations of an entire variable's relationships, and instead to use this kind of quantitative analysis as a useful tool in reshaping the way I think about such variables. Initially, I did not think I needed to compare several variables because I did not think they had anything to do with one another, and by comparing every single variable against one another, I've been proven wrong.
