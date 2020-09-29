@@ -1,0 +1,97 @@
+---
+title: "Assignment 4: Linear Regression Model"
+author: "Mary Geschwindt"
+date: "9/24/2020"
+output: 
+  html_document:
+    theme: paper
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment Setup
+
+First I'll load my libraries:
+
+```{r message=FALSE, results='hide'}
+library(tidyverse)
+```
+
+## Data
+
+### Loading Data
+
+Here is the data loaded from my csv file:
+
+```{r message=FALSE, results='hide'}
+read.csv("women_nyctransport2018.csv")
+```
+
+### Recoding Data
+
+I also want to recode and rename a few variables so that it will be easier to read my regression model outputs.
+
+```{r message=FALSE, results='hide'}
+women_data <- read_csv("women_nyctransport2018.csv") %>%
+  mutate(JWTR_label = case_when(
+    JWTR_label=="Bicycle"~"Bicycle",
+    JWTR_label=="Bus or trolley bus"~"Bus",
+    JWTR_label=="Car, truck, or van"~"1Car",
+    JWTR_label=="Ferryboat"~"Ferry",
+    JWTR_label=="Other method"~"Other",
+    JWTR_label=="Railroad"~"Train",
+    JWTR_label=="Subway or elevated"~"Subway",
+    JWTR_label=="Taxicab"~"Taxi",
+    JWTR_label=="Walked"~"Walked"))
+```
+
+## Estimating a Regression Model
+
+### Variable Explanation
+
+The dependent variable I'll use, or the variable which I am trying to predict, will be the travel time to work (JWMNP).
+
+The relevant independent variables which I want to control are:
+
+1. *Means of Transportation to Work* (JWTR_Label), because daily patterns of rush hour traffic delays and systems delays for different modes of transportation may influence the time spent traveling to work.
+2. *Income* (PINCP), because a person's income may determine what means of transportation they can afford to take on a daily basis.
+3. *Ambulatory difficulty* (DPHY_label), because a person's physical disability may determine what means of transportation they are physically capable of taking, in addition to how much time they may need to navigate the city with a physical disability.
+4. *Age* (AGEP), because my sample population includes individuals under the legal driving age which influences available means of transportation for some of my sample population.
+
+### Regression Model Output
+
+```{r}
+model <- lm(JWMNP ~ JWTR_label + PINCP + DPHY_label + AGEP,
+            data = women_data)
+
+summary(model)
+```
+
+## Regression Model Interpretation
+
+**Model Fit**
+
+The *model fit*, or R-squared value for my linear regression is about 0.28. This means that 28% of the variation in a woman in NYC's travel time to work can be predicted given the variables for means of transportation, income, ambulatory difficulty, and age.
+
+**Statistical Significance**
+
+In reviewing the p-values for statistical significance, several variables are statistically significant. For means of transportation to work, the bus, subway, train, and walking all have a p-value of less than 0.05, meaning they are statistically significant. Age is another variable which is statistically significant because its p-value is less than 0.05. This statistical significance means that I can be 95-percent confident that these variables or categories are related to predicting my dependent variable of travel time to work.
+
+All of the other variables represented in this model's output are not statistically significant. Such variables include the bicycle, ferry (which is close to being statistically significant), other means of transportation, taxi, income, and if a person has an ambulatory difficulty. There still may be a relationship between these variables and my dependent variable; the fact that they are not statistically significant merely means that I cannot be 95-percent confident that these variables can predict a woman's travel time to work. IT's possible that if I increased my sample size, which currently includes only 323 women, that relationships would start to emerge more clearly, and I could be more confident about those relationships.
+
+**Interpretation of Estimates**
+
+The following is an interpretation of all of the variables in the estimate column:
+
+All means of transportation are compared to the car as my base category, because I want to know whether each means of transportation is faster or slower compared to the car in terms of travel time to work. Taking a bicycle to work would take about 16 minutes less than taking a car. Taking a bus would take about 27 minutes more than taking a car. A ferry would take about 29 minutes more. Taking the subway or an "other" means of transportation would both add about 18 minutes more to a woman's commute than if she took a car. A taxi would take about 12 minutes less than a car, while taking the train would increase commute time by about 42 minutes. Finally, walking to work takes about 22 minutes less than driving by car.
+
+Income has a coefficient in the estimate column of about -0.000027. This means that for every added 1 minute to a woman's commute time, her income decreases by about $0.000027.
+
+The ambulatory difficulty category compares women who have a physical disability to women without a physical disability. I'm interested to understand whether a woman with a physical disability takes more or less time on average to get to work than a woman without a physical disability. The coefficient for a woman with a physical disability is -7.694. This means that a woman with a physical disability may be predicted to take about 8 minutes less to get to work than a woman without a disability.
+
+Age has a coefficient of about 0.24. This means that for every 1 minute added to a woman's commute time, it can be predicted that her age increases by 0.24 years.
