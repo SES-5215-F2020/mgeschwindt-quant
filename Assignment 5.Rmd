@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 title: "Assignment 5: Interactions and Transformations"
 author: "Mary Geschwindt"
@@ -16,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Assignment Setup
-Adding a comment.
+
 First I will load the necessary libraries:
 
 ```{r message=FALSE, results='hide'}
@@ -141,132 +140,3 @@ export_summs(model1, model2, model3, model4,
 ### Selecting the Model with Best Fit
 
 Models 1, 2, and 3 each have an R-squared value of about 0.29, while Model 4 has an R-squared value of 0.28. Model 3 has the highest R-squared value of 0.2908, which is slightly higher than Models 1 and 2. Model 3, the model which used an interaction between disability and age, is the model which has the best fit for calculating the regression model outputs.
-=======
----
-title: "Assignment 5: Interactions and Transformations"
-author: "Mary Geschwindt"
-date: "10/3/2020"
-output:
-  html_document:
-    theme: paper
-    toc: true
-    toc_depth: 3
-    toc_float: true
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Assignment Setup
-
-First I will load the necessary libraries:
-
-```{r message=FALSE, results='hide'}
-library(tidycensus)
-library(tidyverse)
-library(jtools)
-library(interactions)
-```
-
-I will call the women_nyctransport2018 CSV file:
-
-```{r message=FALSE, results='hide'}
-read.csv("women_nyctransport2018.csv")
-```
-
-Now I'll recode a few of my variables for clarity in reading the models:
-
-```{r message=FALSE, results='hide'}
-women_data <- read_csv("women_nyctransport2018.csv") %>%
-  mutate(JWTR_label = case_when(
-    JWTR_label=="Bicycle"~"Bicycle",
-    JWTR_label=="Bus or trolley bus"~"Bus",
-    JWTR_label=="Car, truck, or van"~"1Car",
-    JWTR_label=="Ferryboat"~"Ferry",
-    JWTR_label=="Other method"~"Other",
-    JWTR_label=="Railroad"~"Train",
-    JWTR_label=="Subway or elevated"~"Subway",
-    JWTR_label=="Taxicab"~"Taxi",
-    JWTR_label=="Walked"~"Walked")) %>%
-  mutate(DPHY_label = case_when(
-    DPHY_label=="Yes"~"Physically Disabled",
-    DPHY_label=="No"~"Not Phsycailly Disabled"))
-```
-
-## Transformations and Interactions
-
-### Estimating a Linear Regression Model
-
-The following is the linear regression model from Assignment 4, for reference. My dependent variable is travel time to work (JWMNP). My independent variables are means of transportation to work (JWTR_label), income (PINCP), ambulatory difficulty (DPHY_label), and age (AGEP).
-
-```{r}
-model1 <- lm(JWMNP ~ JWTR_label + PINCP + DPHY_label + AGEP,
-            data = women_data)
-
-summary(model1)
-```
-
-### Transformation
-
-I will do a log transformation of income, since it is possible that it is percentage changes of income which may make a difference for every additional minute for which a woman in NYC commutes to work, rather than discrete dollar amounts.
-
-```{r}
-model2 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + AGEP,
-            data = women_data)
-
-summary(model2)
-```
-
-The R-squared value is 0.2901. This is slightly less than the initial linear regression model which had an R-squared value of 0.2902.
-
-### Interaction 1: Ambulatory Difficulty and Age
-
-I will look at the interaction for whether or not a woman has a physical disability, and the interaction variable will be age.
-
-```{r}
-model3 <- lm(JWMNP ~ JWTR_label + PINCP + DPHY_label + AGEP + DPHY_label:AGEP,
-             data = women_data)
-
-summary(model3)
-```
-
-This model shows that age is closer to being statistically significant, with a p-value of 0.09. The R-squared value for this model is 0.2908, which is higher than the R-squared values for initial, linear regression model and the log transformation model.
-
-### Interaction 2: Means of Transportation to Work and Age
-
-I will look at the interaction for a woman's means of transportation to work, and the interaction variable will be age.
-
-```{r}
-model4 <- lm(JWMNP ~ JWTR_label:AGEP + PINCP + DPHY_label + AGEP + DPHY_label,
-             data = women_data)
-
-summary(model4)
-```
-
-The R-squared value is the lowest of all of the models tested so far, at about 0.28.
-
-## Best Fit Model
-
-I will now compare the initial linear regression model with the one transformed model and the two models which each include an interaction.
-
-```{r}
-coeff_names <- c("Means of Transportation\nto work(compared to car" = "JWTR_label",
-                 "Income (dollars)" = "PINCP",
-                 "Income\n(log-transformed)" = "log(PINCP)",
-                 "Age (years)" = "AGEP",
-                 "Physical Disability\n(compared to not disabled)" = "DPHY_label",
-                 "Interaction: Disability and Age" = "DPHY_label:AGEP",
-                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_label:AGEP")
-
-#export_summs(model1, model2, model3, model4,
- #            error_format = "(p = {p.value})",
-  #           error_pos = "same",
-   #          coefs = coeff_names)
-```
-
-
-
-
-
->>>>>>> db954458ea8755ddd982fc853c9dca9d902a53e4
