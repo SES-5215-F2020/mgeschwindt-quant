@@ -1,0 +1,225 @@
+---
+title: "Assignment 5: Interactions and Transformations"
+author: "Mary Geschwindt"
+date: "10/3/2020"
+output:
+  html_document:
+    theme: paper
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment Setup
+
+First I will load the necessary libraries:
+
+```{r message=FALSE, results='hide'}
+library(tidycensus)
+library(tidyverse)
+library(jtools)
+library(interactions)
+```
+
+I will call the women_nyctransport2018 CSV file:
+
+```{r message=FALSE, results='hide'}
+read.csv("women_nyctransport2018.csv")
+```
+
+Now I'll recode a few of my variables for clarity in reading the models:
+
+```{r message=FALSE, results='hide'}
+women_data <- read_csv("women_nyctransport2018.csv") %>%
+  mutate(JWTR_label = case_when(
+    JWTR_label=="Bicycle"~"Bicycle",
+    JWTR_label=="Bus or trolley bus"~"Bus",
+    JWTR_label=="Car, truck, or van"~"1Car",
+    JWTR_label=="Ferryboat"~"Ferry",
+    JWTR_label=="Other method"~"Other",
+    JWTR_label=="Railroad"~"Train",
+    JWTR_label=="Subway or elevated"~"Subway",
+    JWTR_label=="Taxicab"~"Taxi",
+    JWTR_label=="Walked"~"Walked")) %>%
+  mutate(DPHY_label = case_when(
+    DPHY_label=="Yes"~"Physically Disabled",
+    DPHY_label=="No"~"Not Phsycailly Disabled"))
+```
+
+## Transformations and Interactions
+
+### Estimating a Linear Regression Model
+
+The following is the linear regression model from Assignment 4, for reference. My dependent variable is travel time to work (JWMNP). My independent variables are means of transportation to work (JWTR_label), income (PINCP), ambulatory difficulty (DPHY_label), and age (AGEP).
+
+```{r}
+model1 <- lm(JWMNP ~ JWTR_label + PINCP + DPHY_label + AGEP,
+            data = women_data)
+
+summary(model1)
+```
+
+### Transformation
+
+I will do a log transformation of income, since it is possible that it is percentage changes of income which may make a difference for every additional minute for which a woman in NYC commutes to work, rather than discrete dollar amounts.
+
+```{r}
+model2 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + AGEP,
+            data = women_data)
+
+summary(model2)
+```
+
+The R-squared value is 0.2901. This is slightly less than the initial linear regression model which had an R-squared value of 0.2902.
+
+### Converting a Continuous Variable to a Categorical Variable
+
+I will convert the continuous variable of age into a categorical variable, because I have an assumption that perhaps age is somehow related to certain commute times. For example, perhaps women 60 and over have more consistently shorter commute times because they might be traveling straight to work, while women in their 20s and 30s may have longer commute times because they may be dropping off children at school or daycare as a part of their commutes. This is only an assumption and I would have to look at other kinds of data related to household sizes and children's ages in those households in order to come to a real conclusion about why women of in certain age categories take more or less time to go to work. Still, I will try this conversion as a test to see what the model produces.
+
+```{r}
+women_data <- women_data %>%
+  mutate(age_group = case_when(AGEP <= 49 ~ "Younger",
+                               AGEP >= 50 ~ "Older"))
+
+model3 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + age_group,
+            data = women_data)
+
+summary(model3)
+```
+
+This R-squared value is slightly higher than the initial regression model's R-squared value.
+
+### Interaction 1: Ambulatory Difficulty and Age
+
+I will look at the interaction for whether or not a woman has a physical disability, and the interaction variable will be age. I suspect that the older a woman is may have an effect on whether or not a woman has an ambulatory difficulty.
+
+```{r}
+model4 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + AGEP + DPHY_label:AGEP,
+             data = women_data)
+
+summary(model4)
+```
+
+The R-squared value for this model is 0.2909, which is higher than the R-squared values for the initial, linear regression model and the log transformation model. It's still lower than the R-squared value which converted age to a categorical variable.
+
+### Interaction 2: Means of Transportation to Work and Age
+
+I will look at the interaction for a woman's means of transportation to work, and the interaction variable will be age. I think that age may have an effect on what means of transportation a woman is more like to take, and that would then affect travel time to work.
+
+```{r}
+model5 <- lm(JWMNP ~ JWTR_label:AGEP + log(PINCP) + DPHY_label + AGEP + DPHY_label,
+             data = women_data)
+
+summary(model5)
+```
+
+The R-squared value is the lowest of all of the models tested so far, at about 0.28.
+
+## The Preferred Model
+
+### Comparing the Models
+
+I will now compare the initial linear regression model with the one transformed model, the model which converts age to a categorical variable, and the two models which each include an interaction.
+
+```{r}
+coeff_names <- c("Means of Transportation\nto work(compared to car)" = "JWTR_labelBicycle",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelBus",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelFerry",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelOther",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelSubway",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelTaxi",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelTrain",
+                 "Means of Transportation\nto work(compared to car)" = "JWTR_labelWalked",
+                 "Income (dollars)" = "PINCP",
+                 "Income\n(log-transformed)" = "log(PINCP)",
+                 "Age (years)" = "AGEP",
+                 "Age (Under 50)" = "age_groupYounger",
+                 "Physical Disability\n(compared to not disabled)" = "DPHY_labelPhysically Disabled",
+                 "Interaction: Disability and Age" = "DPHY_labelPhysically Disabled:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelBicycle:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelBus:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelFerry:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelOther:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelSubway:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelTaxi:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelTrain:AGEP",
+                 "Interaction: Means of Transportation\nto Work and Age" = "JWTR_labelWalked:AGEP")
+
+
+export_summs(model1, model2, model3, model4, model5,
+             error_format = "(p = {p.value})",
+             error_pos = "same",
+             coefs = coeff_names)
+```
+
+Models 1, 2, 3, and 4 each have an R-squared value of about 0.29, while Model 5 has an R-squared value of 0.28. Model 3 has the highest R-squared value of 0.2919, which is slightly higher than Models 1, 2, and 4. Model 3 is the model which converts age into a categorical variables.
+
+### Graphing to Determine Best Fit
+
+```{r}
+ModelFit <- tibble(model = c(1, 2, 3, 4, 5),
+                   R_square = c(summary(model1)$adj.r.squared,
+                                summary(model2)$adj.r.squared,
+                                summary(model3)$adj.r.squared,
+                                summary(model4)$adj.r.squared,
+                                summary(model5)$adj.r.squared))
+
+ggplot(ModelFit, aes(x = model, y = R_square)) +
+  geom_line() +
+  scale_x_continuous(name = "",
+                     breaks = breaks <- seq(1, 5, by = 1),
+                     labels = paste("Model", breaks)) +
+  scale_y_continuous(name = "Adjusted R-squared value") +
+  theme_minimal()
+```
+
+### Selecting the Preferred Model
+
+Model 3, the model which converts age to a categorical variable, is the preferred model. It has a slighted higher adjusted R-squared value than models 1 and 2. Its adjusted R-squared value is also greater than Model 4, and even greater than Model 5. I will use Model 3 as my preferred value for the remainder of this assignment.
+
+## Visualizing the Preferred Model: Model 3
+
+### 95-percent Confidence Intervals for Model 3 Coefficients
+
+```{r}
+coeff_desc <- c("Bicycle\n(compared to car)" = "JWTR_labelBicycle",
+                 "Bus\n(compared to car)" = "JWTR_labelBus",
+                 "Ferry\n(compared to car)" = "JWTR_labelFerry",
+                 "Other Means\n(compared to car)" = "JWTR_labelOther",
+                 "Subway\n(compared to car)" = "JWTR_labelSubway",
+                 "Taxi\n(compared to car)" = "JWTR_labelTaxi",
+                 "Train\n(compared to car)" = "JWTR_labelTrain",
+                 "Walked\n(compared to car)" = "JWTR_labelWalked",
+                 "Income\n(log-transformed)" = "log(PINCP)",
+                 "Age (Under 50)" = "age_groupYounger",
+                 "Physical Disability\n(compared to not disabled)" = "DPHY_labelPhysically Disabled")
+
+plot_coefs(model3,
+           coefs = coeff_desc,
+           plot.distributions = TRUE,
+           rescale.distributes = TRUE) +
+  scale_x_continuous(name = "Effect on predicted travel time to work (minutes)")
+```
+
+### Chart of Income and Commute Time Relationship
+
+The following is a plot of the relationship between income and commute time, comparing older and younger women, and holding all other variables at their means.
+
+```{r}
+interact_plot(model3, pred = PINCP, modx = age_group, interval = TRUE) +
+  scale_x_continuous(name = "Annual Income (thousands)",
+                     limits = c(0, 700000),
+                     breaks = breaks <- seq(0, 700000, by = 70000),
+                     labels = paste("$",
+                                    prettyNum(breaks/1000, big.mark = "'"),
+                                    sep = "")) +
+  scale_y_continuous(name = "Travel Time to Work (minutes)",
+                     breaks = seq(0, 150, by = 5)) +
+  scale_color_discrete(name = "") +
+  scale_linetype_discrete(name = "") +
+  scale_fill_discrete(name = "")
+```
