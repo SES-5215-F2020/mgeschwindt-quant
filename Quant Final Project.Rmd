@@ -14,6 +14,42 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Document Setup
+
+```{r load libraries, message=FALSE, results='hide'}
+library(tidycensus)
+library(tidyverse)
+library(ggplot2)
+library(scales)
+library(knitr)
+library(jtools)
+library(interactions)
+```
+
+```{r load data, message=FALSE}
+women_data <- read.csv("women_nyctransport2018.csv")
+
+data.frame(women_data)
+```
+
+```{r recode, message=FALSE, results='hide'}
+women_data <- read_csv("women_nyctransport2018.csv") %>%
+  mutate(JWTR_label = case_when(
+    JWTR_label=="Bicycle"~"Bicycle",
+    JWTR_label=="Bus or trolley bus"~"Bus",
+    JWTR_label=="Car, truck, or van"~"1Car",
+    JWTR_label=="Ferryboat"~"Ferry",
+    JWTR_label=="Other method"~"Other",
+    JWTR_label=="Railroad"~"Train",
+    JWTR_label=="Subway or elevated"~"Subway",
+    JWTR_label=="Taxicab"~"Taxi",
+    JWTR_label=="Walked"~"Walked")) %>%
+  mutate(DPHY_label = case_when(
+    DPHY_label=="Yes"~"Physically Disabled",
+    DPHY_label=="No"~"Not Phsycailly Disabled"))
+```
+
+
 ## Research Question and Hypothesis
 
 For this project, I was curious about women's commutes in New York City. I wanted to study what types of modes of transportation are women most likely to use, and whether having a physical disability impacts access to certain transportation modes. My research question is what is the impact on a woman's travel time to work in New York City based on her mode of transportation and disability status?
@@ -32,27 +68,41 @@ The population is women in who live in New York City who have a commute to work.
 
 Using the US Census 1-year American Community Survey from 2018 as my data source, I selected the following variables to test my hypothesis:
 
-**1. Means of transportation to work (categorical): JWTR**
-I selected means of transportation to work because this is a variable which may be influenced by other variables such as income, age, and ambulatory difficulty, while at the same time means of transportation may influence travel time.
+**Means of transportation to work (categorical): JWTR**
+I selected means of transportation to work because this is a variable which may impact commute times, depending on which mode of transportation is used. This variable can also be impacted by other variables, such as income, which may influence which means of transportation a woman in this sample is able to afford to take daily.
 
-**2. Age (continuous): AGEP**
+**Age (continuous): AGEP**
 Age was selected because a woman's age may be related to her income and therefore what means of transportation she can afford. It may also be related to her physical abilities in taking certain kinds of transportation.
 
-**3. Travel time to work (continuous): JWMNP**
-Travel time to work was selected because there may be relationship between all other variables and how fast a women can get to work given the other selected variables. I selected travel time under the assumption that it could be one of the indicators for how equitable a transportation system is.
+**Travel time to work (continuous): JWMNP**
+Travel time to work was selected because there may be relationship between all other variables and how fast a woman can get to work given the other selected variables. I selected travel time under the assumption that it could be one of the indicators for how equitable a transportation system is.
 
-**4. Ambulatory difficulty (categorical): DPHY**
-Ambulatory difficulty, or physical disability, was selected because it may be related to a woman's inability to take certain types of transportation modes.
+**Ambulatory difficulty (categorical): DPHY**
+Ambulatory difficulty, or physical disability, was selected because it may be related to a woman's inability to take certain types of transportation modes, which in turn could impact travel times.
 
-**5. Race (categorical): RAC1P**
-Race was selected because I was curious if there was a relationship between access to a mode of transportation and race based on a woman's physical location - the reason for selecting this variable presents a slightly different hypothesis, which is that race is related to where a woman lives, and therefore determines what transportation infrastructures she may have access to where she lives, and therefore might be related to her travel time to work. This variable was interesting to look at in terms of correlation, but it requires further study for a more specific and slightly different hypothesis related to how equitable transportation infrastructures are for women in New York City.
+**Race (categorical): RAC1P**
+Race was selected because I was curious if there was a relationship between access to a mode of transportation and race based on a woman's physical location - the reason for selecting this variable presents a slightly different hypothesis, which is that race may be related to where a  woman lives, and therefore determines what transportation infrastructures she may have access to in her home neighborhood. Where a woman lives and what she has access to might be related to her travel time to work. This variable is interesting to look at in terms of correlation, but it requires further study for a more specific and slightly different hypothesis related to how equitable transportation infrastructures are for women in New York City.
 
-**6. Income (continuous): PINCP**
+**Income (continuous): PINCP**
 Income was selected because it may be related to what means of transportation a women might be able to afford in New York City; for example, the costs associated with owning and maintaining a car to drive to work in NYC are much higher than owning a bicycle which a woman can ride to work instead.
 
 ## Methods
 
+### Distributions & Proportions
+
+Once the population and variables were determined and the dataset created, my first method was to understand what the distributions and proportions of this sample looked like. To do this, I took a different approach depending on whether the variables were continuous or categorical.
+
+For continuous variables, I calculated the summary statistics, including the sample mean, sample standard deviation, the 95-percent confidence interval for the population mean, and the interquartile range. The results for the continuous variables, which include age, income, and travel time to work, are as follows:
+
+```{r summary statistics calculation, message=FALSE}
+age_summary <- summary(women_data$AGEP)
+age_sd <- sd(AGEP, na.rm=TRUE)
+```
+
+
 ## Results
+
+
 
 ## Discussion & Limitations
 
@@ -62,13 +112,13 @@ Transportation costs is a variable which I wish I was able to include from the b
 
 ### Race Variable
 
-I mentioned earlier that I had included race as a variable early on in creating my dataset. I initially thought that understanding if there was a relationship between race and a woman's means of transportation to work and travel time to work. In purusing the question of equity in NYC transportation infrastructures, I assumed race would be a necessary variable to include.
+As previously mentioned, I had included race as a variable early on in creating my dataset. I initially wanted to understand if there was a relationship between race, a woman's means of transportation to work, and travel time to work. In pursuing the question of equity in NYC transportation infrastructures, I assumed race would be a necessary variable to include.
 
-After completing the various tests and interpreting the results, I came to the conclusion that I need to include more variables when looking at race in order to answer a slightly different question. I don't think that looking at race on its own with respect to these other variables can help me to reach a conclusion about equity. To address this additional question, I propose altering this study to also include a variable for neighborhood.
+After completing the various tests and interpreting the results, I came to the conclusion that I need to include more variables when looking at race in order to answer a slightly different question. Looking at race on its own with respect to these other variables is not enough to reach a conclusion about equity. To address this additional question, altering this study to include a variable for neighborhood would be necessary in determining if there is even a correlation between race, where a woman lives, her access to transportation modes, and travel time to work.
 
 ### Disability Variables
 
-For the sake of simplicity for the first assignment, I had only included ambulatory difficulty when looking at disability. I think in order to have a more well-rounded approach in determining whether or not a transportation system is equitable for disabled users, I need to include other disability variables, such as for vision, hearing, and cognitive disabilities. By including a wider range of disabilities, the conclusion of whether or not a transportation infrastructural system is equitable would be more in line with including everyone. It's not possible to talk about equity if people are excluded.
+For the sake of simplicity for the first assignment, I had only included ambulatory difficulty when looking at disability. In order to have a more well-rounded approach in determining whether or not a transportation system is equitable for disabled users, it is essential to include other disability variables, such as for vision, hearing, and cognitive disabilities. By including a wider range of disabilities, the conclusion of whether or not a transportation infrastructural system is equitable would be more in line with including everyone. It is not possible to talk about equity for all New Yorkers if entire groups of people are excluded.
 
 ### Sample Size
 
