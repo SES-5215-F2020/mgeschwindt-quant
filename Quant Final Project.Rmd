@@ -1,5 +1,5 @@
 ---
-title: "Quant Final Project"
+title: "An Analysis of Women's Commutes in New York City"
 author: "Mary Geschwindt"
 date: "10/4/2020"
 output:
@@ -16,28 +16,37 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Research Question and Hypothesis
 
-For this project, I wanted to look at women in New York City. My research question is...
+For this project, I was curious about women's commutes in New York City. I wanted to study what types of modes of transportation are women most likely to use, and whether having a physical disability impacts access to certain transportation modes. My research question is what is the impact on a woman's travel time to work in New York City based on her mode of transportation and disability status?
 
-My hypothesis is that women who live and commute to work in New York City may have varied travel times to work depending on their means of transportation, their age, their income, and whether or not they have a physical disability. I was curious about race as a variable for several of the steps in the process, so I included that variable in my dataset as well.
+My hypothesis is that women who live and commute to work in New York City may have varied travel times to work depending on their means of transportation, their age, their income, and whether or not they have a physical disability. I was curious about race as a variable for several of the steps in the study, so I included that variable in my dataset as well. I hypothesize that these variables may have positive or negative impacts on women's lives depending on the lengths of their commutes.
 
 This research question is important because it is a means of understanding how equitable the transportation infrastructures are in New York City. There are many ways to define what equitable means; one can look at equity in terms of gender, race, age, physical ability, income, and other variables. This assignment cannot, and does not seek to, determine whether or not New York's transportation infrastructures serve all people in the City equally. But, it does look at one specific population to try to determine whether some of the variables do make a difference in some women having an unequal experience.
 
 ## Dataset
 
-The population is women in who live in New York City who have a commute to work. The data is taken at the person-level, and there are 327 observations in the dataset. This means that there are 327 women who are included in this analysis.
+### Population
+
+The population is women in who live in New York City who have a commute to work. The data is taken at the person-level, and there are 327 observations in the dataset. This means that there are 327 women who are included in this analysis. All New York City Public Use Microdata Areas (PUMAs) were used to define the geographic boundaries for the sample of women counted.
+
+### Variables
 
 Using the US Census 1-year American Community Survey from 2018 as my data source, I selected the following variables to test my hypothesis:
 
 **1. Means of transportation to work (categorical): JWTR**
 I selected means of transportation to work because this is a variable which may be influenced by other variables such as income, age, and ambulatory difficulty, while at the same time means of transportation may influence travel time.
+
 **2. Age (continuous): AGEP**
 Age was selected because a woman's age may be related to her income and therefore what means of transportation she can afford. It may also be related to her physical abilities in taking certain kinds of transportation.
+
 **3. Travel time to work (continuous): JWMNP**
 Travel time to work was selected because there may be relationship between all other variables and how fast a women can get to work given the other selected variables. I selected travel time under the assumption that it could be one of the indicators for how equitable a transportation system is.
+
 **4. Ambulatory difficulty (categorical): DPHY**
 Ambulatory difficulty, or physical disability, was selected because it may be related to a woman's inability to take certain types of transportation modes.
+
 **5. Race (categorical): RAC1P**
 Race was selected because I was curious if there was a relationship between access to a mode of transportation and race based on a woman's physical location - the reason for selecting this variable presents a slightly different hypothesis, which is that race is related to where a woman lives, and therefore determines what transportation infrastructures she may have access to where she lives, and therefore might be related to her travel time to work. This variable was interesting to look at in terms of correlation, but it requires further study for a more specific and slightly different hypothesis related to how equitable transportation infrastructures are for women in New York City.
+
 **6. Income (continuous): PINCP**
 Income was selected because it may be related to what means of transportation a women might be able to afford in New York City; for example, the costs associated with owning and maintaining a car to drive to work in NYC are much higher than owning a bicycle which a woman can ride to work instead.
 
@@ -45,7 +54,7 @@ Income was selected because it may be related to what means of transportation a 
 
 ## Results
 
-## Discussion
+## Discussion & Limitations
 
 ### Transportation Costs
 
@@ -63,21 +72,16 @@ For the sake of simplicity for the first assignment, I had only included ambulat
 
 ### Sample Size
 
-There are only 327 observations in my dataset. Had the sample size been larger, it may have been possible for other relationships to emerge. For example...
+There are only 327 observations in my dataset. Had the sample size been larger, it may have been possible for other relationships to emerge. For example, there were only XX observations in my sample who have a physical disability, compared to the remaining XXX observations who do not have a physical disability. Had the sample size been greater, I suspect there would have been more women who had a phsyical disability.
 
 ### Gender Variable
 
-In order to more accurately address the question "Is it equitable?", my analysis may benefit from making a comparison between women and men, with men being the reference value for a gender variable.
+In order to more accurately address the question "Is it equitable?", my analysis may benefit from making a comparison between women and men, with men being the reference value for a gender variable. The question I studied for this project was mainly concerned with women and whether or not they had a disability, but determining true equity requires including many other variables related to intersectional characteristics. 
 
 ## Conclusion
 
-In New York City, about a quarter of the 472 subway stations are ADA accessible as of this year (an infographic depicting which stations are ADA accessible can be seen here: https://gothamist.com/news/infographic-how-much-nyc-subway-accessible). Poorly maintained bike lanes cause bumpy and uncomfortable rides for abled persons, yet nearly eliminate the option of biking for some disabled people. Walking is a mode of transportation employed by many of the City's residents, but not all sidewalks are well-maintained, and there are instances of sidewalk obstructions which make it impossible for a person in a wheelchair or someone with a stroller to pass. Increasingly, cars are taking over the City's streets (especially as a result of COVID-19 instilling fear in people for using public transportation) but are an incredibly expensive mode of transportation compared to other means.
+In New York City, about a quarter of the 472 subway stations are ADA accessible as of this year (an infographic depicting which stations are ADA accessible can be seen here: https://gothamist.com/news/infographic-how-much-nyc-subway-accessible). Poorly maintained bike lanes cause bumpy and uncomfortable rides for abled persons, yet they nearly eliminate the option of biking for some disabled people. Walking is a mode of transportation employed by many of the City's residents, but not all sidewalks are well-maintained, and there are instances of sidewalk obstructions which make it impossible for a person in a wheelchair or someone with a stroller to pass.
 
 All of this is to say that New York City is comprised of a diverse population with many needs. It is the responsibility of the City to provide for the needs of everyday New Yorkers in a way that includes providing equal transportation service to everyone, regardless of gender, ability, age, race, socioeconomic status, and so on. It is necessary to look at this kind of data to determine whether or not the City's transportation infrastructure is equitable. Unequal service for people who live in the same city and are served by the same government agencies and officials is unequal and unjust.
 
 People should care about this analysis and other similar analyses because the role of public transportation and transportation infrastructures maintained by government agencies (such as sidewalk and roadway conditions) is to serve the public. If there are members of the public which have a more difficult time using certain types of infrastructures, then 
-
-
-
-
-
