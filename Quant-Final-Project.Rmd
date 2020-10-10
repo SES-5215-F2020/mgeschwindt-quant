@@ -19,13 +19,14 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidycensus)
 library(tidyverse)
 library(ggplot2)
+library(lemon)
 library(scales)
 library(knitr)
 library(jtools)
 library(interactions)
 ```
 
-```{r load data, message=FALSE}
+```{r load data, message=FALSE, results='hide'}
 women_data <- read.csv("women_nyctransport2018.csv")
 
 attach(women_data)
@@ -45,17 +46,22 @@ women_data <- read_csv("women_nyctransport2018.csv") %>%
     JWTR_label=="Walked"~"Walked")) %>%
   mutate(DPHY_label = case_when(
     DPHY_label=="Yes"~"Physically Disabled",
-    DPHY_label=="No"~"Not Phsycailly Disabled"))
+    DPHY_label=="No"~"Not Physically Disabled"))
 ```
 
+```{r set lemon print functions, message=FALSE, results='hide'}
+knit_print.data.frame <- lemon_print
+```
 
 ## Research Question and Hypothesis
 
-For this project, I was curious about women's commutes in New York City. I wanted to study what types of modes of transportation are women most likely to use, and whether having a physical disability impacts access to certain transportation modes. My research question is what is the impact on a woman's travel time to work in New York City based on her mode of transportation and disability status?
+For this project, I was curious about women's commutes in New York City. I wanted to study what types of modes of transportation are women most likely to use, and whether having a physical disability impacts access to certain transportation modes. My research question is:
 
-My hypothesis is that women who live and commute to work in New York City may have varied travel times to work depending on their means of transportation, their age, their income, and whether or not they have a physical disability. I was curious about race as a variable for several of the steps in the study, so I included that variable in my dataset as well. I hypothesize that these variables may have positive or negative impacts on women's lives depending on the lengths of their commutes.
+**What is the impact on a woman's travel time to work in New York City by her mode of transportation and whether she has a physical disability?**
 
-This research question is important because it is a means of understanding how equitable the transportation infrastructures are in New York City. There are many ways to define what equitable means; one can look at equity in terms of gender, race, age, physical ability, income, and other variables. This assignment cannot, and does not seek to, determine whether or not New York's transportation infrastructures serve all people in the City equally. But, it does look at one specific population to try to determine whether some of the variables do make a difference in some women having an unequal experience.
+My hypothesis is that women who live and commute to work in New York City may have varied travel times to work depending on their means of transportation, their age, their income, and whether or not they have a physical disability. I was curious about race as a variable for several of the steps in the study, so I included that variable in my dataset as well. I hypothesize that these variables may have positive or negative impacts on women's lives depending on how they might shorten or lengthen their commute times.
+
+This research question is important because it is a means of understanding how equitable the transportation infrastructures are in New York City. There are many ways to define what equitable means; one can look at equity in terms of gender, race, age, physical ability, income, and other variables. This assignment cannot, and does not seek to, determine whether or not New York's transportation infrastructures serve all people in the City equally. This project does look at one specific population to try to determine whether some of the variables do make a difference in some women having an unequal experience.
 
 ## Dataset
 
@@ -67,28 +73,28 @@ The population is women in who live in New York City who have a commute to work.
 
 Using the US Census 1-year American Community Survey from 2018 as my data source, I selected the following variables to test my hypothesis:
 
-**Means of transportation to work (categorical): JWTR**
+**Means of transportation to work, or JWTR_label (categorical variable):**
 I selected means of transportation to work because this is a variable which may impact commute times, depending on which mode of transportation is used. This variable can also be impacted by other variables, such as income, which may influence which means of transportation a woman in this sample is able to afford to take daily.
 
-**Age (continuous): AGEP**
+**Age, or AGEP (continuous variable):**
 Age was selected because a woman's age may be related to her income and therefore what means of transportation she can afford. It may also be related to her physical abilities in taking certain kinds of transportation.
 
-**Travel time to work (continuous): JWMNP**
+**Travel time to work, or JWMNP (continuous variable):**
 Travel time to work was selected because there may be relationship between all other variables and how fast a woman can get to work given the other selected variables. I selected travel time under the assumption that it could be one of the indicators for how equitable a transportation system is.
 
-**Ambulatory difficulty (categorical): DPHY**
+**Ambulatory difficulty, or DPHY_label (categorical variable):**
 Ambulatory difficulty, or physical disability, was selected because it may be related to a woman's inability to take certain types of transportation modes, which in turn could impact travel times.
 
-**Race (categorical): RAC1P**
+**Race, or RAC1P_label (categorical variable):**
 Race was selected because I was curious if there was a relationship between access to a mode of transportation and race based on a woman's physical location - the reason for selecting this variable presents a slightly different hypothesis, which is that race may be related to where a  woman lives, and therefore determines what transportation infrastructures she may have access to in her home neighborhood. Where a woman lives and what she has access to might be related to her travel time to work. This variable is interesting to look at in terms of correlation, but it requires further study for a more specific and slightly different hypothesis related to how equitable transportation infrastructures are for women in New York City.
 
-**Income (continuous): PINCP**
+**Income, or PINCP (continuous variable):**
 Income was selected because it may be related to what means of transportation a women might be able to afford in New York City; for example, the costs associated with owning and maintaining a car to drive to work in NYC are much higher than owning a bicycle which a woman can ride to work instead.
 
-Table 1 below presents the first 10 observations of the 327 in this dataset:
+Table 1 below presents the first 6 observations of the 327 in this dataset:
 
-```{r table 1, message=FALSE}
-women_data
+```{r table 1, message=FALSE, caption="Table 1", render=lemon_print}
+head(women_data)
 ```
 
 
@@ -96,7 +102,7 @@ women_data
 
 ### Distributions & Proportions
 
-Once the population and variables were determined and the dataset created, my first method was to understand what the distributions and proportions of this sample looked like. To do this, I took a different approach depending on whether the variables were continuous or categorical.
+Once the population and variables were determined and the dataset created, my first method was to understand what the distributions and proportions of this sample are. To do this, I took a different approach depending on whether the variables were continuous or categorical.
 
 For continuous variables, I calculated the summary statistics, including the sample mean, sample standard deviation, the 95-percent confidence interval for the population mean, and the interquartile range. The results for the continuous variables, which include age, income, and travel time to work, are as follows:
 
@@ -155,7 +161,7 @@ ggplot(women_data,
   scale_x_continuous(name = "Age (years)") +
   scale_y_continuous(name = "Number of People in Sample") +
   stat_bin(binwidth = 1) +
-  labs(title = "Distribution of Age Across Sample Population")
+  labs(title = "Figure 1: Distribution of Age Across Sample Population")
   theme_minimal()
 ```
 
@@ -165,7 +171,7 @@ ggplot(women_data,
   geom_histogram(color = "gray", binwidth = 10) +
   scale_x_continuous(name = "Travel Time to Work (minutes)") +
   scale_y_continuous(name = "Number of People in Sample") +
-  labs(title = "Distribution of Travel Time Across Sample Population")
+  labs(title = "Figure 2: Distribution of Travel Time Across Sample Population")
   theme_minimal()
 ```
 
@@ -177,7 +183,7 @@ ggplot(women_data,
                      label = comma,
                      limits = c(0, 700000)) +
   scale_y_continuous("Number of People in Sample") +
-  labs(title = "Distribution of Income Across Sample Population")
+  labs(title = "Figure 3: Distribution of Income Across Sample Population")
   theme_minimal()
 ```
 
@@ -185,7 +191,7 @@ For categorical variables, I calculated each proportion and confidence interval 
 
 Tables 2, 3, and 4 present the proportions and confidence intervals for means of transportation to work, physical disability, and race, respectively.
 
-```{r table 2, message=FALSE, results='hide'}
+```{r table 2, message=FALSE}
 transport <- unique(JWTR_label)
 
 car <- t.test(JWTR_label == transport[1])
@@ -239,7 +245,7 @@ transport_shares <- tibble("Transport" = c("Car, truck, or van",
 knitr::kable(transport_shares, caption = "Table 2 (New York City Census Tracts)")
 ```
 
-```{r table 3, message=FALSE, results='hide'}
+```{r table 3, message=FALSE}
 disability_status <- unique(women_data$DPHY_label)
 
 not_disabled <- t.test(DPHY_label == disability_status[1])
