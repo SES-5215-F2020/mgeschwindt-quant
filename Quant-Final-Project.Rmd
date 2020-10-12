@@ -5,9 +5,9 @@ date: "10/4/2020"
 output:
   html_document:
     theme: paper
-    toc: true
+    toc: yes
     toc_depth: 3
-    toc_float: true
+    toc_float: yes
     code_folding: hide
 ---
 
@@ -15,7 +15,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r load libraries, message=FALSE, results='hide'}
+```{r load libraries, message=FALSE, echo=FALSE}
 library(tidycensus)
 library(tidyverse)
 library(ggplot2)
@@ -24,15 +24,16 @@ library(scales)
 library(knitr)
 library(jtools)
 library(interactions)
+library(huxtable)
 ```
 
-```{r load data, message=FALSE, results='hide'}
+```{r load data, message=FALSE, echo=FALSE}
 women_data <- read.csv("women_nyctransport2018.csv")
 
 attach(women_data)
 ```
 
-```{r recode, message=FALSE, results='hide'}
+```{r recode, message=FALSE, results='hide', echo=FALSE}
 women_data <- read_csv("women_nyctransport2018.csv") %>%
   mutate(JWTR_label = case_when(
     JWTR_label=="Bicycle"~"Bicycle",
@@ -48,6 +49,7 @@ women_data <- read_csv("women_nyctransport2018.csv") %>%
     DPHY_label=="Yes"~"Physically Disabled",
     DPHY_label=="No"~"Not Physically Disabled"))
 ```
+
 
 ```{r set lemon print functions, message=FALSE, results='hide'}
 knit_print.data.frame <- lemon_print
@@ -385,7 +387,7 @@ Finally, I tested out several versions of my initial linear regression model (Mo
 
 Table 5 presents a comparison between all models.
 
-```{r table 5, message=FALSE, results='hide'}
+```{r table 5, message=FALSE}
 model1 <- lm(JWMNP ~ JWTR_label + PINCP + DPHY_label + AGEP,
             data = women_data)
 model2 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + AGEP,
@@ -533,4 +535,9 @@ In New York City, about a quarter of the 472 subway stations are ADA accessible 
 
 All of this is to say that New York City is comprised of a diverse population with many needs. It is the responsibility of the City to provide for the needs of everyday New Yorkers in a way that includes providing equal transportation service to everyone, regardless of gender, ability, age, race, socioeconomic status, and so on. It is necessary to look at this kind of data to determine whether or not the City's transportation infrastructure is equitable. Unequal service for people who live in the same city and are served by the same government agencies and officials is unequal and unjust.
 
-People should care about this analysis and other similar analyses because the role of public transportation and transportation infrastructures maintained by government agencies (such as sidewalk and roadway conditions) is to serve the public. If there are members of the public which have a more difficult time using certain types of infrastructures, then 
+People should care about this analysis and other similar analyses because the role of public transportation and transportation infrastructures maintained by government agencies (such as sidewalk and roadway conditions) is to serve the public. If there are members of the public which have a more difficult time using certain types of infrastructures, then this is important information for any transit agency or transportation planner to know in creating a more equitable transit experience.
+
+```{r print PDF, message=FALSE, echo=FALSE}
+
+```
+
