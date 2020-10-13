@@ -57,13 +57,13 @@ knit_print.data.frame <- lemon_print
 
 ## Research Question and Hypothesis
 
-For this project, I was curious about women's commutes in New York City. I wanted to study what types of modes of transportation are women most likely to use, and whether having a physical disability impacts access to certain transportation modes. My research question is:
+For this project, I was curious about women's commutes in New York City. I wanted to study what types of modes of transportation are women most likely to use, and whether having a physical disability would further define what types of modes of transportation are used in addition to increased or decreased travel times. My research question is:
 
-**What is the impact on a woman's travel time to work in New York City by her mode of transportation and whether she has a physical disability?**
+**Is a woman's travel time to work in New York City impacted by her mode of transportation and whether she has a physical disability?**
 
-My hypothesis is that women who live and commute to work in New York City may have varied travel times to work depending on their means of transportation, their age, their income, and whether or not they have a physical disability. I was curious about race as a variable for several of the steps in the study, so I included that variable in my dataset as well. I hypothesize that these variables may have positive or negative impacts on women's lives depending on how they might shorten or lengthen their commute times.
+My hypothesis is that women who live and commute to work in New York City may have varied travel times to work, and that these travel times are related to their means of transportation, their age, their income, and whether or not they have a physical disability. I was curious about race as a variable for several of the steps in the study, so I included that variable in my dataset as well. I hypothesize that these variables may have positive or negative impacts on women's lives depending on how they might shorten or lengthen their commute times. Because my research question can only answer a yes or no question, determining whether commute times reflect a positive or negative impact on a woman's life would have to be further studied using more quantitative and qualitative data analyses.
 
-This research question is important because it is a means of understanding how equitable the transportation infrastructures are in New York City. There are many ways to define what equitable means; one can look at equity in terms of gender, race, age, physical ability, income, and other variables. This assignment cannot, and does not seek to, determine whether or not New York's transportation infrastructures serve all people in the City equally. This project does look at one specific population to try to determine whether some of the variables do make a difference in some women having an unequal experience.
+This research question is important because it is a means of understanding how equitable the transportation infrastructures are in New York City. There are many ways to define what equitable means; one can look at equity in terms of gender, race, age, physical ability, income, and other variables. This assignment cannot, and does not seek to, determine whether or not New York's transportation infrastructures serve all people in the City equally. This project does look at one specific population to try to determine whether some of the variables have a relationship with respect to time, and considering longer or shorter commute times as unequal experiences which could be further studied in order to determine whether they constitute a real inequity.
 
 ## Dataset
 
@@ -76,22 +76,22 @@ The population is women in who live in New York City who have a commute to work.
 Using the US Census 1-year American Community Survey from 2018 as my data source, I selected the following variables to test my hypothesis:
 
 **Means of transportation to work, or JWTR_label (categorical variable):**
-I selected means of transportation to work because this is a variable which may impact commute times, depending on which mode of transportation is used. This variable can also be impacted by other variables, such as income, which may influence which means of transportation a woman in this sample is able to afford to take daily.
+I selected means of transportation to work because this is a variable which may be related to commute times, depending on which mode of transportation is used. This variable can also be impacted by other variables, such as income, which may influence which means of transportation a woman in this sample is able to afford to take daily.
 
 **Age, or AGEP (continuous variable):**
-Age was selected because a woman's age may be related to her income and therefore what means of transportation she can afford. It may also be related to her physical abilities in taking certain kinds of transportation.
+Age was selected because a woman's age may be related to her income, perhaps impacting what means of transportation she can afford. It may also be related to her physical abilities in taking certain kinds of transportation.
 
 **Travel time to work, or JWMNP (continuous variable):**
-Travel time to work was selected because there may be relationship between all other variables and how fast a woman can get to work given the other selected variables. I selected travel time under the assumption that it could be one of the indicators for how equitable a transportation system is.
+Travel time to work was selected because there may be relationships between all other variables and how fast a woman can get to work given the other selected variables. I selected travel time under the assumption that it could be one of the indicators for how equitable a transportation system is.
 
 **Ambulatory difficulty, or DPHY_label (categorical variable):**
 Ambulatory difficulty, or physical disability, was selected because it may be related to a woman's inability to take certain types of transportation modes, which in turn could impact travel times.
 
 **Race, or RAC1P_label (categorical variable):**
-Race was selected because I was curious if there was a relationship between access to a mode of transportation and race based on a woman's physical location - the reason for selecting this variable presents a slightly different hypothesis, which is that race may be related to where a  woman lives, and therefore determines what transportation infrastructures she may have access to in her home neighborhood. Where a woman lives and what she has access to might be related to her travel time to work. This variable is interesting to look at in terms of correlation, but it requires further study for a more specific and slightly different hypothesis related to how equitable transportation infrastructures are for women in New York City.
+Race was selected because I was curious if there was a relationship between access to a mode of transportation and race based on a woman's physical location - the reason for selecting this variable presents a slightly different hypothesis, which is that race may be related to where a woman lives. A woman's home location may then be related to what transportation infrastructures she has access to in her home neighborhood. Where a woman lives and what she has access to might be related to her travel time to work. This variable is interesting to look at in terms of correlation, but it requires further study for a more specific and slightly different hypothesis related to equity and transportation.
 
 **Income, or PINCP (continuous variable):**
-Income was selected because it may be related to what means of transportation a women might be able to afford in New York City; for example, the costs associated with owning and maintaining a car to drive to work in NYC are much higher than owning a bicycle which a woman can ride to work instead.
+Income was selected because it may be related to what means of transportation a women might be able to afford in New York City; for example, the costs associated with owning and maintaining a car to drive to work in NYC are much higher than owning a bicycle which could be ridden to work instead.
 
 Table 1 below presents the first 6 observations of the 327 in this dataset:
 
@@ -104,9 +104,7 @@ head(women_data)
 
 ### Distributions & Proportions
 
-Once the population and variables were determined and the dataset created, my first method was to understand what the distributions and proportions of this sample are. To do this, I took a different approach depending on whether the variables were continuous or categorical.
-
-For continuous variables, I calculated the summary statistics, including the sample mean, sample standard deviation, the 95-percent confidence interval for the population mean, and the interquartile range. The results for the continuous variables, which include age, income, and travel time to work, are as follows:
+Once the population and variables were determined and the dataset created, my first method was to understand what the distributions and proportions of this sample are. To do this, I took a different approach depending on whether the variables were continuous or categorical. For continuous variables, I calculated the summary statistics, including the sample mean, sample standard deviation, the 95-percent confidence interval for the population mean, and the interquartile range. The results for the continuous variables, which include age, income, and travel time to work, are as follows:
 
 ```{r summary statistics calculation, message=FALSE, results='hide'}
 age_summary <- summary(women_data$AGEP)
@@ -322,6 +320,8 @@ ggplot(women_data, aes(x = AGEP, y = JWMNP)) +
   labs(title = "Figure 4")
 ```
 
+The correlation between travel time and age indicates that women under 30 and women over 60 have slightly shorter commute times than women who fall between the ages of 30 and 60. On average, there is a small decrease in commute times for women in their mid-forties. Women just around 30 and 60 years old can be expected to have the longest commute times on average.
+
 ```{r figure 5, message=FALSE, results='hide'}
 correlation2 <- cor.test(women_data$PINCP, women_data$AGEP)
 
@@ -340,7 +340,9 @@ ggplot(women_data, aes(x = PINCP, y = AGEP)) +
   labs(title = "Figure 5")
 ```
 
-For the two-sample t-tests, age and physically disability, travel time to work and physical disability, and income and ambulatory difficulty were all found to not be significant due to having high p-values.
+The correlation between age and income indicates that the older a woman is, the more likely she is to have a higher income. There is an exception for women around the age of 42 in which income levels drop slightly compared to women around the ages of 43; this income then sees a fairly constant increase as age increases. This relationship between older women having higher incomes may demonstrate, with further study, that there is a relationship between age and means of transportation to work, given that the higher income which may come with higher age may indicate which means of transportation to work a woman is more likely to be able to afford and have access to.
+
+For the two-sample t-tests, age and physical disability, travel time to work and physical disability, and income and physical disability were all found to not be significant due to having high p-values.
 
 For the ANOVA tests, age and means of transportation were found to have a significant relationship (Figure 6), while both travel time and means of transportation and income and means of transportation were found to have a very significant relationship each. Travel time and race, and income and race, also have significant relationships due to having p-values less than 0.05.
 
@@ -366,7 +368,11 @@ ggplot(women_data, aes(x = JWTR_label, y = AGEP)) +
   labs(title = "Figure 6")
 ```
 
+The box plot in Figure 6 presents the relationship between age and means of transportation to work. The visual further demonstrates that some means of transportation to work may be more significant than others. This significance will be tested later in this report in a linear regression model.
+
 Results for the Chi-square tests indicate that means of transportation to work and physical disability is a significant relationship. The same result was found for means of transportation to work and race. Finally, physical disability and race was found not to have a significant relationship with a p-value of 0.09.
+
+What do the correlations determined by these tests mean?
 
 ### Linear Regression Analysis
 
@@ -379,11 +385,11 @@ After determining the significance and strength of every possible variable relat
 
 This initial linear regression model calculates that the R-squared value is about 0.29. This means that 29% of the variation in a woman's commute time in NYC can be predicted given her means of transportation, her income, whether she has a physical disability, and her age.
 
-This regression model also reveals that certain variables are more significant than others. For means of transportation to work, the bus, subway, train, and walking are indicated as significant.
+This regression model also reveals that certain variables are more significant than others. For means of transportation to work, the bus, subway, train, and walking are indicated as significant, because their p-values are less than 0.05. None of the other variables are significant, according to this model.
 
 ### Interactions & Transformations
 
-Finally, I tested out several versions of my initial linear regression model (Model 1) to determine which model is the preferred model. I completed a log transformation of the variable for income for the first model variation (Model 2), because it is possible that it is percentage changes of income which may make a difference for every additional minute for which a woman in NYC commutes to work, rather than discrete dollar amounts. I also attempted to convert age into a categorical variable (Model 3) in order to distinguish between younger women who may have children and therefore longer commute times which consist of dropping children off at school or daycare, and older women who may not have children. Finally, I created two versions of regression models which use an interaction term. One model uses an interaction term for physical disability and age (Model 4), because I suspect that an older woman may be more likely to have a physical disability. The other model uses an interaction term for means of transportation to work and age (Model 5), because I suspect that age may have an affect on what means of transportation a woman is more able to take.
+Finally, I tested several variations of my initial linear regression model (Model 1) to determine which model is the preferred model. I completed a log transformation of the variable for income for the first model variation (Model 2), because it is possible that it is percentage changes of income which may make a difference for every additional minute for which a woman in NYC commutes to work, rather than discrete dollar amounts. I also attempted to convert age into a categorical variable (Model 3) in order to distinguish between an assumption I have that younger women may have children and therefore longer commute times which consist of dropping children off at school or daycare. Finally, I created two versions of regression models which use an interaction term. One model uses an interaction term for physical disability and age (Model 4), because I suspect that an older woman may be more likely to have a physical disability. The other model uses an interaction term for means of transportation to work and age (Model 5), because I suspect that age may have an affect on what means of transportation a woman is more able to take.
 
 Table 5 presents a comparison between all models.
 
@@ -460,7 +466,22 @@ ggplot(ModelFit, aes(x = model, y = R_square)) +
   theme_minimal()
 ```
 
-An interpretation of Model 3 having the best fit could be that grouping women by age may reveal that younger women who have children under the age of 18 are more likely to have longer commutes because of "trip-chaining", or grouping several stops into a single, longer trip. A further study would need to be tested which include variables such as children in household under the age of 18 in order to confirm whether this is really what is causing younger women to have longer commute times.
+An interpretation of Model 3 having the best fit could be that grouping women by age may reveal that younger women who have children under the age of 18 are more likely to have longer commutes because of "trip-chaining", or grouping several stops into a single, longer trip. A further study would need to be tested which include variables such as children in a household under the age of 18 in order to explore a relationship between younger women, presence of children, and longer commute times.
+
+The regression model for Model 3 is presented below:
+
+```{r model 3 regression table, message=FALSE, echo=FALSE}
+women_data <- women_data %>%
+  mutate(age_group = case_when(AGEP <= 49 ~ "Younger",
+                               AGEP >= 50 ~ "Older"))
+
+model3 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + age_group,
+            data = women_data)
+
+summary(model3)
+```
+
+The significant variables in Model 3 are bus, subway, train, and walked for the means of transportation variables. 
 
 Figure 8 presents the 95-percent confidence intervals for the Model 3 coefficients.
 
@@ -507,6 +528,8 @@ interact_plot(model3, pred = PINCP, modx = age_group, interval = TRUE) +
 
 ## Discussion & Limitations
 
+*** DISCUSS WHAT THIS ALL MEANS ***
+
 ### Transportation Costs
 
 Transportation costs is a variable which I wish I was able to include from the beginning, but which was not available as a variable in the 1-year ACS from 2018. I think that looking at the transportation costs would strengthen the question of whether or not a system is equitable by comparing transportation costs with income.
@@ -530,6 +553,8 @@ There are only 327 observations in my dataset. Had the sample size been larger, 
 In order to more accurately address the question "Is it equitable?", my analysis may benefit from making a comparison between women and men, with men being the reference value for a gender variable. The question I studied for this project was mainly concerned with women and whether or not they had a disability, but determining true equity requires including many other variables related to intersectional characteristics. 
 
 ## Conclusion
+
+*** come up with a conclusion based on the results! does it answer my question? how or how not? ***
 
 In New York City, about a quarter of the 472 subway stations are ADA accessible as of this year (an infographic depicting which stations are ADA accessible can be seen here: https://gothamist.com/news/infographic-how-much-nyc-subway-accessible). Poorly maintained bike lanes cause bumpy and uncomfortable rides for abled persons, yet they nearly eliminate the option of biking for some disabled people. Walking is a mode of transportation employed by many of the City's residents, but not all sidewalks are well-maintained, and there are instances of sidewalk obstructions which make it impossible for a person in a wheelchair or someone with a stroller to pass.
 
