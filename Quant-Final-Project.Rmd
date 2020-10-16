@@ -243,28 +243,32 @@ knitr::kable(transport_shares, caption = "Table 2 (New York City Census Tracts)"
 ```
 
 ```{r disability status, message=FALSE, results='hide', message=FALSE, echo=FALSE}
-disability_status <- unique(women_data$DPHY_label)
-disability_status
+#disability_status <- unique(women_data$DPHY_label)
+#disability_status
 ```
 
 ```{r set up disability ttest, message=FALSE, results='hide', message=FALSE, echo=FALSE}
-not_disabled <- t.test(DPHY_label == disability_status[1])
-disabled <- t.test(DPHY_label == disability_status[2])
+#not_disabled <- t.test(DPHY_label == disability_status[1])
+#disabled <- t.test(DPHY_label == disability_status[2])
 ```
 
 
 ```{r table 3, message=FALSE, echo=FALSE}
-disability_shares <- tibble("Physical Disability" = c("Not Physically Disabled",
-                                                      "Physically Disabled"),
-                            "Sample Proportion" = c(paste(prettyNum(not_disabled$estimate*100, digits = 3), "%"),
-                                                    paste(prettyNum(disabled$estimate*100, digits = 3), "%")),
-                            "95-Percent Confidence Interval" = c(paste(prettyNum(not_disabled$conf.int[1]*100, digits = 3), "% to",
-                                                                       prettyNum(not_disabled$conf.int[2]*100, digits = 3), "%", sep = ""),
-                                                                 paste(prettyNum(disabled$conf.int[1]*100, digits = 3), "% to",
-                                                                       prettyNum(disabled$conf.int[2]*100, digits = 3), "%", sep = "")))
+#disability_shares <- tibble("Physical Disability" = c("Not Physically Disabled",
+ #                                                     "Physically Disabled"),
+  #                          "Sample Proportion" = c(paste(prettyNum(not_disabled$estimate*100, digits = 3), "%"),
+   #                                                 paste(prettyNum(disabled$estimate*100, digits = 3), "%")),
+    #                        "95-Percent Confidence Interval" = c(paste(prettyNum(not_disabled$conf.int[1]*100, digits = 3), "% #to",
+ #                                                                      prettyNum(not_disabled$conf.int[2]*100, digits = 3), #"%", sep = ""),
+ #                                                                paste(prettyNum(disabled$conf.int[1]*100, digits = 3), "% to",
+  #                                                                     prettyNum(disabled$conf.int[2]*100, digits = 3), "%", #sep = "")))
 
-knitr::kable(disability_shares, caption = "Table 3 (New York City Census Tracts)")
+#knitr::kable(disability_shares, caption = "Table 3 (New York City Census Tracts)")
 ```
+
+
+![Table 3 (New York City Census Tracts)](table3.png)
+
 
 
 ```{r table 4, message=FALSE, echo=FALSE}
@@ -393,6 +397,8 @@ This regression model also reveals that certain variables are more significant t
 
 Finally, I tested several variations of my initial linear regression model (Model 1) to determine which model is the preferred model. I completed a log transformation of the variable for income for the first model variation (Model 2), because it is possible that it is percentage changes of income which may make a difference for every additional minute for which a woman in NYC commutes to work, rather than discrete dollar amounts. I also attempted to convert age into a categorical variable (Model 3) in order to distinguish between an assumption I have that younger women may have children and therefore longer commute times which consist of dropping children off at school or daycare. Finally, I created two versions of regression models which use an interaction term. One model uses an interaction term for physical disability and age (Model 4), because I suspect that an older woman may be more likely to have a physical disability. The other model uses an interaction term for means of transportation to work and age (Model 5), because I suspect that age may have an affect on what means of transportation a woman is more able to take.
 
+The regression model is the method which will best help me to answer my research question. By creating such interaction terms, conducting a log transformation of income, and attempting a continuous to categorical variable conversion, one of these methods will present an interaction model with a best fit. The best fit of this model tells me that the model is closest to predicting the results of my dependent variable depending on the variability of my independent variables. Because my research question is to understand how my independent variables impact the dependent variable of travel time to work, a regression model will best help me to come to a conclusion based on its results.
+
 Table 5 presents a comparison between all models.
 
 ```{r table 5, message=FALSE, echo=FALSE}
@@ -448,7 +454,7 @@ With R-squared values close to 0.29, Models 1, 2, 3, and 4 are all higher than M
 
 ## Results
 
-Table 5 presents a comparison of each regression model tested in order to answer my research question. The table presents the R-squared values for all models; the higher the R-squared value, the better the model fit. Of each of the regression models tested, Model 3, which includes a log transformation of the income variable as well as a conversion of age from a continuous to a categorical variable, is the preferred model because it has the highest R-squared value (0.2919). Figure 7 visualizes each model, presenting again that Model 3 has the best fit.
+Table 5 presents a comparison of each regression model tested in order to answer my research question. The table presents the R-squared values for all models; the higher the R-squared value, the better the model fit. Of each of the regression models tested, Model 3, which includes a log transformation of the income variable as well as a conversion of age from a continuous to a categorical variable, is the preferred model because it has the highest R-squared value (0.2919). Figure 7 visualizes each model, presenting again that Model 3 has the best fit based on the adjusted R-squared value.
 
 ```{r figure 7, message=FALSE, results='hide', echo=FALSE}
 ModelFit <- tibble(model = c(1, 2, 3, 4, 5),
