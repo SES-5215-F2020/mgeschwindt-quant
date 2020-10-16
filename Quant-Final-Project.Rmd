@@ -1,17 +1,16 @@
 ---
-title: "An Analysis of Women's Commutes in New York City"
+title: "An Analysis of Women's Commute Times in New York City"
 author: "Mary Geschwindt"
-date: "10/4/2020"
+date: "10/16/2020"
 output:
   html_document:
     theme: paper
     toc: yes
     toc_depth: 3
     toc_float: yes
-    code_folding: hide
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -33,7 +32,7 @@ women_data <- read.csv("women_nyctransport2018.csv")
 attach(women_data)
 ```
 
-```{r recode, message=FALSE, results='hide', echo=FALSE}
+```{r recode, message=FALSE, results='hide', warning=FALSE, echo=FALSE}
 women_data <- read_csv("women_nyctransport2018.csv") %>%
   mutate(JWTR_label = case_when(
     JWTR_label=="Bicycle"~"Bicycle",
@@ -51,7 +50,7 @@ women_data <- read_csv("women_nyctransport2018.csv") %>%
 ```
 
 
-```{r set lemon print functions, message=FALSE, results='hide'}
+```{r set lemon print functions, message=FALSE, results='hide', echo=FALSE}
 knit_print.data.frame <- lemon_print
 ```
 
@@ -95,7 +94,7 @@ Income was selected because it may be related to what means of transportation a 
 
 Table 1 below presents the first 6 observations of the 327 in this dataset:
 
-```{r table 1, message=FALSE, caption="Table 1", render=lemon_print}
+```{r table 1, message=FALSE, caption="Table 1", render=lemon_print, echo=FALSE}
 head(women_data)
 ```
 
@@ -106,7 +105,7 @@ head(women_data)
 
 Once the population and variables were determined and the dataset created, my first method was to understand what the distributions and proportions of this sample are. To do this, I took a different approach depending on whether the variables were continuous or categorical. For continuous variables, I calculated the summary statistics, including the sample mean, sample standard deviation, the 95-percent confidence interval for the population mean, and the interquartile range. The results for the continuous variables, which include age, income, and travel time to work, are as follows:
 
-```{r summary statistics calculation, message=FALSE, results='hide'}
+```{r summary statistics calculation, message=FALSE, results='hide', echo=FALSE}
 age_summary <- summary(women_data$AGEP)
 age_sd <- sd(AGEP, na.rm = TRUE)
 age_mean_int <- t.test(AGEP)
@@ -118,7 +117,7 @@ income_sd <- sd(PINCP, na.rm = TRUE)
 income_mean_int <- t.test(PINCP)
 ```
 
-```{r summary statistics table, message=FALSE}
+```{r summary statistics table, message=FALSE, echo=FALSE}
 summary_table <- tibble(
   Statistic = c("Sample Mean",
                 "Median",
@@ -154,7 +153,7 @@ summary_table <- tibble(
 
 The distribution of each of these continuous variables may be visualized through Figures 1, 2, and 3:
 
-```{r figure 1, message=FALSE, results='hide'}
+```{r figure 1, message=FALSE, results='hide', echo=FALSE}
 ggplot(women_data,
        aes(x=AGEP)) +
   geom_histogram(color = "gray", binwidth = 2) +
@@ -165,7 +164,7 @@ ggplot(women_data,
   theme_minimal()
 ```
 
-```{r figure 2, message=FALSE, results='hide'}
+```{r figure 2, message=FALSE, results='hide', echo=FALSE}
 ggplot(women_data,
        aes(x=JWMNP)) +
   geom_histogram(color = "gray", binwidth = 10) +
@@ -175,7 +174,7 @@ ggplot(women_data,
   theme_minimal()
 ```
 
-```{r figure 3, message=FALSE, results='hide'}
+```{r figure 3, message=FALSE, results='hide', warning=FALSE, echo=FALSE}
 ggplot(women_data,
        aes(x=PINCP)) +
   geom_histogram() +
@@ -187,11 +186,9 @@ ggplot(women_data,
   theme_minimal()
 ```
 
-For categorical variables, I calculated each proportion and confidence interval using a T-Test.
+For categorical variables, I calculated each proportion and confidence interval using a T-Test. Tables 2, 3, and 4 present the proportions and confidence intervals for means of transportation to work, physical disability, and race, respectively.
 
-Tables 2, 3, and 4 present the proportions and confidence intervals for means of transportation to work, physical disability, and race, respectively.
-
-```{r table 2, message=FALSE}
+```{r table 2, message=FALSE, echo=FALSE}
 transport <- unique(JWTR_label)
 
 car <- t.test(JWTR_label == transport[1])
@@ -245,25 +242,32 @@ transport_shares <- tibble("Transport" = c("Car, truck, or van",
 knitr::kable(transport_shares, caption = "Table 2 (New York City Census Tracts)")
 ```
 
-```{r table 3, message=FALSE}
+```{r disability status, message=FALSE, results='hide', message=FALSE, echo=FALSE}
 disability_status <- unique(women_data$DPHY_label)
+disability_status
+```
 
+```{r set up disability ttest, message=FALSE, results='hide', message=FALSE, echo=FALSE}
 not_disabled <- t.test(DPHY_label == disability_status[1])
 disabled <- t.test(DPHY_label == disability_status[2])
+```
 
-disability_shares <- tibble("Ambulatory Difficulty" = c("Not Disabled",
-                                                        "Disabled"),
-                           "Sample Proportion" = c(paste(prettyNum(not_disabled$estimate*100, digits = 3), "%"),
-                                                   paste(prettyNum(disabled$estimate*100, digits = 3), "%")),
-                           "95-percent Confidence Interval" = c(paste(prettyNum(not_disabled$conf.int[1]*100, digits = 3), "% to",
-                                                                      prettyNum(not_disabled$conf.int[2]*100, digits = 3), "%", sep = ""),
-                                                                paste(prettyNum(disabled$conf.int[1]*100, digits = 3), "% to",
-                                                                      prettyNum(disabled$conf.int[2]*100, digits = 3), "%", sep = "")))
+
+```{r table 3, message=FALSE, echo=FALSE}
+disability_shares <- tibble("Physical Disability" = c("Not Physically Disabled",
+                                                      "Physically Disabled"),
+                            "Sample Proportion" = c(paste(prettyNum(not_disabled$estimate*100, digits = 3), "%"),
+                                                    paste(prettyNum(disabled$estimate*100, digits = 3), "%")),
+                            "95-Percent Confidence Interval" = c(paste(prettyNum(not_disabled$conf.int[1]*100, digits = 3), "% to",
+                                                                       prettyNum(not_disabled$conf.int[2]*100, digits = 3), "%", sep = ""),
+                                                                 paste(prettyNum(disabled$conf.int[1]*100, digits = 3), "% to",
+                                                                       prettyNum(disabled$conf.int[2]*100, digits = 3), "%", sep = "")))
 
 knitr::kable(disability_shares, caption = "Table 3 (New York City Census Tracts)")
 ```
 
-```{r table 4, message=FALSE}
+
+```{r table 4, message=FALSE, echo=FALSE}
 race <- unique(women_data$RAC1P_label)
 
 white <- t.test(RAC1P_label == race[1])
@@ -302,7 +306,7 @@ Once distributions and proportions were determined for each variable, I tested t
 
 First I will describe the results from the Pearson's correlation tests. Any test which returned a p-value less than 0.05 indicates that the relationship is significant. A correlation value is returned between -1 and 1, with the closer a value is to either -1 or 1 indicating a stronger correlation, and the negative or positive value indicating whether the correlation is negative or positive. With a p-value of 0.004, age and travel time to work were found to have a significant relationship (Figure 4). The correlation is weak but positive. Income and age were also found to have a significant relationship with a p-value of 0.007; the correlation is again weak but positive (Figure 5). Income and travel time to work returned a p-value of 0.86, meaning it is not a significant relationship.
 
-```{r figure 4, message=FALSE, results='hide'}
+```{r figure 4, message=FALSE, results='hide', echo=FALSE}
 correlation1 <- cor.test(women_data$AGEP, women_data$JWMNP)
 
 ggplot(women_data, aes(x = AGEP, y = JWMNP)) +
@@ -322,7 +326,7 @@ ggplot(women_data, aes(x = AGEP, y = JWMNP)) +
 
 The correlation between travel time and age indicates that women under 30 and women over 60 have slightly shorter commute times than women who fall between the ages of 30 and 60. On average, there is a small decrease in commute times for women in their mid-forties. Women just around 30 and 60 years old can be expected to have the longest commute times on average.
 
-```{r figure 5, message=FALSE, results='hide'}
+```{r figure 5, message=FALSE, results='hide', echo=FALSE}
 correlation2 <- cor.test(women_data$PINCP, women_data$AGEP)
 
 ggplot(women_data, aes(x = PINCP, y = AGEP)) +
@@ -346,7 +350,7 @@ For the two-sample t-tests, age and physical disability, travel time to work and
 
 For the ANOVA tests, age and means of transportation were found to have a significant relationship (Figure 6), while both travel time and means of transportation and income and means of transportation were found to have a very significant relationship each. Travel time and race, and income and race, also have significant relationships due to having p-values less than 0.05.
 
-```{r figure 6, message=FALSE, results='hide'}
+```{r figure 6, message=FALSE, results='hide', echo=FALSE}
 anova1 <- aov(AGEP ~ JWTR_label, data = women_data)
 
 differences1 <- TukeyHSD(anova1)
@@ -372,8 +376,6 @@ The box plot in Figure 6 presents the relationship between age and means of tran
 
 Results for the Chi-square tests indicate that means of transportation to work and physical disability is a significant relationship. The same result was found for means of transportation to work and race. Finally, physical disability and race was found not to have a significant relationship with a p-value of 0.09.
 
-What do the correlations determined by these tests mean?
-
 ### Linear Regression Analysis
 
 After determining the significance and strength of every possible variable relationship, I conducted a linear regression. I used the following variables in the linear regression model:
@@ -393,7 +395,7 @@ Finally, I tested several variations of my initial linear regression model (Mode
 
 Table 5 presents a comparison between all models.
 
-```{r table 5, message=FALSE}
+```{r table 5, message=FALSE, echo=FALSE}
 model1 <- lm(JWMNP ~ JWTR_label + PINCP + DPHY_label + AGEP,
             data = women_data)
 model2 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + AGEP,
@@ -448,7 +450,7 @@ With R-squared values close to 0.29, Models 1, 2, 3, and 4 are all higher than M
 
 Table 5 presents a comparison of each regression model tested in order to answer my research question. The table presents the R-squared values for all models; the higher the R-squared value, the better the model fit. Of each of the regression models tested, Model 3, which includes a log transformation of the income variable as well as a conversion of age from a continuous to a categorical variable, is the preferred model because it has the highest R-squared value (0.2919). Figure 7 visualizes each model, presenting again that Model 3 has the best fit.
 
-```{r figure 7, message=FALSE, results='hide'}
+```{r figure 7, message=FALSE, results='hide', echo=FALSE}
 ModelFit <- tibble(model = c(1, 2, 3, 4, 5),
                    R_square = c(summary(model1)$adj.r.squared,
                                 summary(model2)$adj.r.squared,
@@ -481,11 +483,11 @@ model3 <- lm(JWMNP ~ JWTR_label + log(PINCP) + DPHY_label + age_group,
 summary(model3)
 ```
 
-The significant variables in Model 3 are bus, subway, train, and walked for the means of transportation variables. 
+The significant variables in Model 3 are bus, subway, train, and walked for the means of transportation variables. The means of transportation variables are compared to a car as the reference variable. Younger, for age group, is very close to being significant in this regression model. In this case, "younger" is compared to the reference variable "older".
 
 Figure 8 presents the 95-percent confidence intervals for the Model 3 coefficients.
 
-```{r figure 8, message=FALSE, results='hide'}
+```{r figure 8, message=FALSE, results='hide', echo=FALSE}
 coeff_desc <- c("Bicycle\n(compared to car)" = "JWTR_labelBicycle",
                  "Bus\n(compared to car)" = "JWTR_labelBus",
                  "Ferry\n(compared to car)" = "JWTR_labelFerry",
@@ -508,9 +510,9 @@ plot_coefs(model3,
 
 Several of the coefficients cross the line for 0, meaning that one cannot be 95-percent confident that these variables are significant because they may include a correlation value of 0.
 
-Figure 9 presents a chart of the relationship between income (which has a log transformation) and commute time for women who are older verses women who are younger. For the purposes of this model, "younger" means women under the age of 50 years, while "older" includes all women 50 years of age and older. Figure 9 reveals that there is a difference between older and younger women's commute times, but that it is actually women in the older category who tend to have longer commute times. This is the opposite of my initial assumption, which was that younger women (who may have children) would be expected to have longer commute times on average.
+Figure 9 presents a graph of the relationship between income (which has a log transformation) and commute time for women who are older verses women who are younger. For the purposes of this model, "younger" means women under the age of 50 years, while "older" includes all women 50 years of age and older. Figure 9 reveals that there is a difference between older and younger women's commute times, but that it is actually women in the older category who tend to have longer commute times. This is the opposite of my initial assumption, which was that younger women (who may have children) would be expected to have longer commute times on average.
 
-```{r figure 9, message=FALSE, results='hide'}
+```{r figure 9, message=FALSE, results='hide', warning=FALSE, echo=FALSE}
 interact_plot(model3, pred = PINCP, modx = age_group, interval = TRUE) +
   scale_x_continuous(name = "Annual Income (thousands)",
                      limits = c(0, 700000),
@@ -528,7 +530,7 @@ interact_plot(model3, pred = PINCP, modx = age_group, interval = TRUE) +
 
 ## Discussion & Limitations
 
-*** DISCUSS WHAT THIS ALL MEANS ***
+To reiterate my research question, I am seeking to understand if there is a relationship between travel time to work and means of transportation and whether or not a woman has a physical disability. The methods completed so far have revealed the following answer to my initial research question: *some* means of transportation have a significant relationship with travel time to work; physical disability was not found to have a relationship at this time, per the Model 3 linear regression model. The following presents a discussion on the limitations of this study, which may contribute to why this is the answer to my research question at this point in time. 
 
 ### Transportation Costs
 
@@ -544,9 +546,11 @@ After completing the various tests and interpreting the results, I came to the c
 
 For the sake of simplicity for the first assignment, I had only included ambulatory difficulty when looking at disability. In order to have a more well-rounded approach in determining whether or not a transportation system is equitable for disabled users, it is essential to include other disability variables, such as for vision, hearing, and cognitive disabilities. By including a wider range of disabilities, the conclusion of whether or not a transportation infrastructural system is equitable would be more in line with including everyone. It is not possible to talk about equity for all New Yorkers if entire groups of people are excluded.
 
-### Sample Size
+### Sample
 
-There are only 327 observations in my dataset. Had the sample size been larger, it may have been possible for other relationships to emerge. For example, there were only XX observations in my sample who have a physical disability, compared to the remaining XXX observations who do not have a physical disability. Had the sample size been greater, I suspect there would have been more women who had a phsyical disability.
+There are only 327 observations in my dataset. Had the sample size been larger, it may have been possible for other relationships to emerge. For example, there were only 13 observations in my sample who have a physical disability, compared to the remaining 314 observations who do not have a physical disability. Had the sample size been greater, I suspect there would have been more women who had a physical disability.
+
+According to the CDC, about 1 in 4 women in the United States have a physical disability; the ratio of 13 women with a physical disability to 314 women without one does not accurately reflect this statistic. A consideration for why this may be the case is that the sample only includes women who are commuting to work, and who therefore have jobs. It is possible that there is an entire population of women with disabilities who do not have jobs. That means that this population is excluded from being counted in a sample which includes the variable "travel time to work". It is worth considering in a future study how other variables may be used as the dependent variable in order to fully capture the range of disabled women, whether they work or not.
 
 ### Gender Variable
 
@@ -554,15 +558,8 @@ In order to more accurately address the question "Is it equitable?", my analysis
 
 ## Conclusion
 
-*** come up with a conclusion based on the results! does it answer my question? how or how not? ***
+In New York City, about a quarter of the 472 subway stations are ADA accessible as of 2020 (an infographic depicting which stations are ADA accessible can be seen here: https://gothamist.com/news/infographic-how-much-nyc-subway-accessible). Poorly maintained bike lanes cause bumpy and uncomfortable rides for abled persons, yet they nearly eliminate the option of biking for some disabled people. Walking is a mode of transportation employed by many of the City's residents, but not all sidewalks are well-maintained, and there are instances of sidewalk obstructions which make it impossible for a person in a wheelchair or someone with a stroller to pass.
 
-In New York City, about a quarter of the 472 subway stations are ADA accessible as of this year (an infographic depicting which stations are ADA accessible can be seen here: https://gothamist.com/news/infographic-how-much-nyc-subway-accessible). Poorly maintained bike lanes cause bumpy and uncomfortable rides for abled persons, yet they nearly eliminate the option of biking for some disabled people. Walking is a mode of transportation employed by many of the City's residents, but not all sidewalks are well-maintained, and there are instances of sidewalk obstructions which make it impossible for a person in a wheelchair or someone with a stroller to pass.
+All of this is to say that New York City is comprised of a diverse population with many needs. It is the responsibility of the City to provide for the needs of everyday New Yorkers in a way that includes providing equal transportation service to everyone, regardless of gender, ability, age, race, socioeconomic status, and other self-identifying characteristics. It is necessary to look at this kind of data to determine whether or not the City's transportation infrastructure is equitable. Unequal service for people who live in the same city and are served by the same government agencies and officials is unjust.
 
-All of this is to say that New York City is comprised of a diverse population with many needs. It is the responsibility of the City to provide for the needs of everyday New Yorkers in a way that includes providing equal transportation service to everyone, regardless of gender, ability, age, race, socioeconomic status, and so on. It is necessary to look at this kind of data to determine whether or not the City's transportation infrastructure is equitable. Unequal service for people who live in the same city and are served by the same government agencies and officials is unequal and unjust.
-
-People should care about this analysis and other similar analyses because the role of public transportation and transportation infrastructures maintained by government agencies (such as sidewalk and roadway conditions) is to serve the public. If there are members of the public which have a more difficult time using certain types of infrastructures, then this is important information for any transit agency or transportation planner to know in creating a more equitable transit experience.
-
-```{r print PDF, message=FALSE, echo=FALSE}
-
-```
-
+People should care about this analysis and other similar analyses because the role of public transportation and transportation infrastructures maintained by government agencies (such as sidewalk and roadway conditions) is to serve the public. If there are members of the public who have a more difficult time using certain types of infrastructures, then this is important information for any transit agency or transportation planner to know in creating a more equitable transit experience. The goal of this project, and I hope in other future projects, is to help uncover instances of inequities which can be further investigated, and ultimately rectified.
